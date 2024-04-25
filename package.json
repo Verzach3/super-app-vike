@@ -9,7 +9,6 @@
     "preview": "NODE_ENV=production tsx ./h3-entry.ts"
   },
   "imports": {
-    "@/*": "./*.js",
     "@/*": "./*.ts"
   },
   "keywords": [],
@@ -39,10 +38,12 @@
     "@mantine/nprogress": "^7.8.1",
     "@mantine/spotlight": "^7.8.1",
     "@mantine/tiptap": "^7.8.1",
+    "@sinclair/typebox": "^0.32.23",
     "@tabler/icons-react": "^3.2.0",
     "@tiptap/extension-link": "^2.3.0",
     "@tiptap/react": "^2.3.0",
     "@tiptap/starter-kit": "^2.3.0",
+    "@types/fhir": "^0.0.41",
     "@vitejs/plugin-react": "^4.2.1",
     "@xata.io/client": "^0.29.4",
     "cross-fetch": "^4.0.0",
@@ -51,9 +52,11 @@
     "firebase": "^10.11.0",
     "firebase-admin": "^12.1.0",
     "firebaseui": "^6.1.0",
+    "framer-motion": "^11.1.7",
     "h3": "~1.11.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.1.0",
     "recharts": "2",
     "serve-static": "^1.15.0",
     "survey-core": "^1.9.139",

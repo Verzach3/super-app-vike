@@ -1,6 +1,6 @@
 import {redirect, render} from "vike/abort";
 import type {GuardAsync} from "vike/types";
-import {onUserCheck} from "@/pages/+guard.telefunc";
+import {onUserCheck} from "@/pages/patient/guard.telefunc";
 
 const guard: GuardAsync = async (pageContext): ReturnType<GuardAsync> => {
   if (pageContext.urlPathname === '/patient/finishProfile') {
