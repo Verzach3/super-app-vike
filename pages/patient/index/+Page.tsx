@@ -3,35 +3,22 @@ import {IconCaretRight} from "@tabler/icons-react";
 import {motion} from "framer-motion";
 import {FaUserDoctor} from "react-icons/fa6";
 import {useEffect, useState} from "react";
-import type {Patient} from "fhir/r4";
 import {PatientShortcuts} from "@/components/patient/PatientShortcuts";
 import {SurveyCard} from "@/components/patient/surveys/SurveyCard";
 import { navigate } from "vike/client/router";
+import {useData} from "vike-react/useData";
+import {PatientIndexData} from "@/pages/patient/index/+data";
+import {Survey} from "@/types/DBTypes";
 
 
 function Patient_index() {
-  const loaderData = {
-    surveys: []
-  }
-  const [patient, setPatient] = useState<Patient | null>(null);
-  const [profile, setProfile] = useState<PatientProfile | null>(null);
+  const pageData = useData<PatientIndexData>()
+  const [profile, setProfile] = useState< | null>(null);
   useEffect(() => {
-    console.log(loaderData);
-    if ("error" in loaderData) {
-      console.log(loaderData.error, loaderData.status);
-      if (loaderData.error === "Unauthorized") {
-        void navigate("/auth");
-      }
-    }
-    if ("patient" in loaderData) {
-      setPatient(loaderData?.patient);
-    }
-    if ("profile" in loaderData) {
-      setProfile(loaderData?.profile.data);
-    }
+    console.log(pageData);
   }, []);
 
-  if ("error" in loaderData) {
+  if ("error" in pageData) {
     return null;
   }
 
@@ -84,7 +71,7 @@ function Patient_index() {
         </motion.div>
         <Container w={"100%"}>
           <Title ta={"left"} mt={"xss"} style={{ fontFamily: "Inter" }}>
-            Hola, {profile?.name}
+            Hola, {pageData.patientProfile?.name}
           </Title>
         </Container>
         <Container w={"100%"}>
@@ -113,18 +100,18 @@ function Patient_index() {
                 Encuestas Disponibles
               </Title>
             </Center>
-            {loaderData.surveys?.length ?? 0 > 0 ? (
+            {pageData.asignedSurveys?.length ?? 0 > 0 ? (
               <>
                 <SimpleGrid cols={1}>
-                  {loaderData.surveys &&
-                    loaderData.surveys.map((survey) => {
-                      if (!survey.surveys) {
+                  {pageData.asignedSurveys&&
+                    pageData.asignedSurveys.map((asignedSurvey) => {
+                      if (!asignedSurvey) {
                         return null;
                       }
                       return (
-                        <SurveyCard key={survey.surveys.id} onClick={() => {
-                          navigate(`/patient/surveys/${survey.surveys?.id}`);
-                        }} survey={survey.surveys} answerId={survey.answer_id}/>
+                        <SurveyCard key={asignedSurvey.id} onClick={() => {
+                          void navigate(`/patient/surveys/${asignedSurvey.survey?.id}`);
+                        }} survey={asignedSurvey.survey as Survey} answerId={asignedSurvey.answer?.id}/>
                       );
                     })}
                 </SimpleGrid>

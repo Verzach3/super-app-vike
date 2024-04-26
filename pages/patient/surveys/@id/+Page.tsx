@@ -4,24 +4,27 @@ import { useCallback, useEffect, useState } from "react";
 import { Container, Title, Text, Center } from "@mantine/core";
 import { useInterval } from "@mantine/hooks";
 import {navigate} from "vike/client/router";
-
+import {useData} from "vike-react/useData";
+import {SurveyData} from "@/pages/patient/surveys/@id/+data";
+import { onSurveyComplete } from "./SurveyComplete.telefunc";
+import { Survey } from "@/types/DBTypes";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Model } = require("survey-core");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { Survey } = require("survey-react-ui");
+const { Survey: SurveyUI } = require("survey-react-ui");
 
 function Surveys() {
   const [surveyCompleted, setSurveyCompleted] = useState(false);
   const [seconds, setSeconds] = useState(0);
+  const surveyData = useData<SurveyData>();
   const surveyComplete = useCallback(
     (result: svyCore.Model) => {
       console.log(`Survey results: ${JSON.stringify(result.data, null, 3)}`);
-      // submit(result.data, { method: "post" });
+      onSurveyComplete({ survey: surveyData as Survey, response: result.data });
       setSurveyCompleted(true);
     },
     [],
   );
-  const surveyData = {};
   const interval = useInterval(() => setSeconds((s) => s + 1), 1000);
 
   useEffect(() => {
@@ -37,7 +40,7 @@ function Surveys() {
     return interval.stop;
   }, [interval, surveyCompleted]);
 
-  const survey = new Model(surveyData);
+  const survey = new Model(surveyData?.json);
   survey.onComplete.add(surveyComplete);
   if (surveyCompleted) {
     return (
@@ -67,7 +70,7 @@ function Surveys() {
 
   return (
     <div style={{ height: "100%" }}>
-      <Survey model={survey} />
+      <SurveyUI model={survey} />
     </div>
   );
 }

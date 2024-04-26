@@ -8,11 +8,28 @@ import {
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { reload } from "vike/client/router";
+import { LoadingOverlay, Title, Image, Box, Button, Center, Modal, Paper, TextInput, ThemeIcon, Text } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
+import classes from "@/styles/routes/auth.module.css";
+import { useDisclosure } from "@mantine/hooks";
+import { useForm } from "@mantine/form";
+
 
 export default Page;
 
 function Page() {
   const [error, setError] = useState("");
+  const [isModalOpened, { close, open }] = useDisclosure();
+  const [loading, setLoading] = useState<boolean>(true);
+  const loginForm = useForm({
+    initialValues: {
+      email: "",
+    },
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Email invalido'),
+    }
+  })
+
 
   useEffect(() => {
     const auth = getAuth();
@@ -48,7 +65,9 @@ function Page() {
           // Some error occurred, you can inspect the code: error.code
           // Common errors could be invalid email and invalid or expired OTPs.
         });
-      return () => {};
+      return () => { };
+    } else {
+      setLoading(false)
     }
   }, []);
 
@@ -60,17 +79,17 @@ function Page() {
     handleCodeInApp: true,
   };
 
-  async function sendLink() {
+  async function sendLink(email: string) {
     const auth = getAuth();
     try {
       await sendSignInLinkToEmail(
         auth,
-        "gabriel.co.cardenas@gmail.com",
+        email,
         actionCodeSettings
       );
       window.localStorage.setItem(
         "emailForSignIn",
-        "gabriel.co.cardenas@gmail.com"
+        email
       );
     } catch (error: any) {
       const errorCode = error.code;
@@ -103,7 +122,46 @@ function Page() {
 
   return (
     <>
-      <button onClick={sendLink}>Send Link</button>
+      <Modal opened={isModalOpened} onClose={close} zIndex={2000} centered withCloseButton={false}>
+        <Center>
+          <Paper p={20} radius={0}>
+            <Center mb={10}>
+              <ThemeIcon radius={100} size={90}>
+                <IconCheck size={50} stroke={1.5} />
+              </ThemeIcon>
+            </Center>
+            <Title order={2} ta="center" mb={20} ff={"Inter"}>
+              Se ha enviado un link a tu correo electronico
+            </Title>
+            <Text ta="center" mb={20} ff={"Inter"}>
+              Revisa tu correo electronico y haz click en el link para continuar
+            </Text>
+          </Paper>
+        </Center>
+      </Modal>
+      <div className={classes.wrapper}>
+        <Paper className={classes.form} radius={0} p={30}>
+          <Box pos="relative">
+            <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+            <Image src={"/assets/wellfit-bottom-text.svg"} h={200} fit={"contain"} />
+            <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
+              Bienvenido a WellFit
+            </Title>
+            <form onSubmit={loginForm.onSubmit(async values => {
+              setLoading(true)
+              await sendLink(values.email)
+              setLoading(false)
+              open()
+            })}>
+              <TextInput label="Correo Electronico"
+                placeholder="hola@gmail.com" size="md" {...loginForm.getInputProps("email")} />
+              <Button fullWidth mt="xl" size="md" type={"submit"}>
+                Ingresa o Registrate
+              </Button>
+            </form>
+          </Box>
+        </Paper>
+      </div>
     </>
   );
 }

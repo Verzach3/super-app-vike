@@ -1,11 +1,11 @@
-import type {Survey} from "~/types/DBTypes";
 import {Card, Group, Progress, Stack, Text} from "@mantine/core";
 import classes from "@/styles/patient/surveys/SurveyCard.module.css"
+import {Survey} from "@/types/DBTypes";
 
 export function SurveyCard({survey, onClick, answerId}: {
   onClick: () => void,
   survey: Survey,
-  answerId: number | null
+  answerId: string | undefined
 }) {
   return <Card
     withBorder
@@ -26,7 +26,7 @@ export function SurveyCard({survey, onClick, answerId}: {
         <Progress
           value={100}
           color={
-            answerId !== null ? "green" : "orange"
+            answerId ? "green" : "orange"
           }
         />
         <Text>

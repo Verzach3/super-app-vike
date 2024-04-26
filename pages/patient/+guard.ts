@@ -1,15 +1,16 @@
-import {redirect, render} from "vike/abort";
-import type {GuardAsync} from "vike/types";
-import {onUserCheck} from "@/pages/patient/guard.telefunc";
+import { redirect, render } from "vike/abort";
+import type { GuardAsync } from "vike/types";
+import { onUserCheck } from "@/pages/patient/guard.telefunc";
 
 const guard: GuardAsync = async (pageContext): ReturnType<GuardAsync> => {
-  if (pageContext.urlPathname === '/patient/finishProfile') {
-    return
-  }
   if (!pageContext.user) {
     throw redirect("/login", 302);
   }
 
+  if (pageContext.urlPathname === '/patient/finishProfile') {
+    return
+  }
+  
   if (!(await onUserCheck(pageContext.user.uid))) {
     throw redirect("/patient/finishProfile", 302);
   }
@@ -19,4 +20,4 @@ const guard: GuardAsync = async (pageContext): ReturnType<GuardAsync> => {
   // }
 };
 
-export {guard};
+export { guard };

@@ -43,7 +43,7 @@ const navLinks: LinksType = {
     {name: "Tus citas"}
   ],
   "Registros": [
-    {name: "Historias clinicas compartidas"},
+    {name: "Historias clinicas"},
     {name: "Analisis", path: "/patient/lab-results"},
     {name: "Resultados de diagnosticos"},
     {name: "Diagnostico por imagenes"},

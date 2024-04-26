@@ -1,17 +1,8 @@
 import React from "react";
 import { Counter } from "./Counter.js";
+import { navigate } from "vike/client/router";
 
 export default function Page() {
-  return (
-    <>
-      <h1>My Vike app</h1>
-      This page is:
-      <ul>
-        <li>Rendered to HTML.</li>
-        <li>
-          Interactive. <Counter />
-        </li>
-      </ul>
-    </>
-  );
+  navigate("/patient");
+  return null;
 }
