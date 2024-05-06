@@ -107,10 +107,10 @@ export function SurveyItem({
 				</Card>
 			</Card.Section>
 			<Card.Section>
-				<Group grow justify={"space-between"}>
+				<Group grow justify={"space-between"} wrap="nowrap">
 					<Group grow my={"xs"} justify={"flex-start"} ml={"md"}>
 						<Stack gap={0}>
-							<Text ta={"left"} size={"md"} ff={"Inter"} fw={600}>
+							<Text ta={"left"} size={"md"} ff={"Inter"} fw={600} truncate="end">
 								{title}
 							</Text>
 							<Text size={"xs"} ff={"Inter"} c={"gray"} fw={600}>
@@ -118,32 +118,36 @@ export function SurveyItem({
 							</Text>
 						</Stack>
 					</Group>
-					<Menu shadow="md" width={200}>
-						<Menu.Target>
-									<ActionIcon variant={"white"} c={"gray"} size={"md"}>
-										<IconDots />
-									</ActionIcon>
-						</Menu.Target>
-						<Menu.Dropdown>
-							<Menu.Label>Application</Menu.Label>
-							<Menu.Item
-								leftSection={
-									<IconSettings style={{ width: rem(14), height: rem(14) }} />
-								}
-							>
-								Settings
-							</Menu.Item>
-							<Menu.Item
-								leftSection={
-									<IconMessageCircle
-										style={{ width: rem(14), height: rem(14) }}
-									/>
-								}
-							>
-								Messages
-							</Menu.Item>
-						</Menu.Dropdown>
-					</Menu>
+					<Group justify="right">
+						<Menu shadow="md" width={200}>
+							<Menu.Target>
+								<ActionIcon variant={"white"} c={"gray"} size={"md"} w={"100%"} onClick={(e) => {
+									e.stopPropagation();
+								}}>
+									<IconDots />
+								</ActionIcon>
+							</Menu.Target>
+							<Menu.Dropdown>
+								<Menu.Label>Application</Menu.Label>
+								<Menu.Item
+									leftSection={
+										<IconSettings style={{ width: rem(14), height: rem(14) }} />
+									}
+								>
+									Settings
+								</Menu.Item>
+								<Menu.Item
+									leftSection={
+										<IconMessageCircle
+											style={{ width: rem(14), height: rem(14) }}
+										/>
+									}
+								>
+									Messages
+								</Menu.Item>
+							</Menu.Dropdown>
+						</Menu>
+					</Group>
 				</Group>
 			</Card.Section>
 		</Card>

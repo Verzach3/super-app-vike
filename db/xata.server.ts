@@ -69,6 +69,18 @@ const tables = [
       { column: "respondent", table: "survey_answers" },
     ],
   },
+  {
+    name: "roles",
+    columns: [{ name: "type", type: "string", unique: true }],
+    revLinks: [{ column: "asigned_role", table: "asigned_roles" }],
+  },
+  {
+    name: "asigned_roles",
+    columns: [
+      { name: "user_uid", type: "string", unique: true },
+      { name: "asigned_role", type: "link", link: { table: "roles" } },
+    ],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -86,11 +98,19 @@ export type SurveyAnswersRecord = SurveyAnswers & XataRecord;
 export type PatientProfiles = InferredTypes["patient_profiles"];
 export type PatientProfilesRecord = PatientProfiles & XataRecord;
 
+export type Roles = InferredTypes["roles"];
+export type RolesRecord = Roles & XataRecord;
+
+export type AsignedRoles = InferredTypes["asigned_roles"];
+export type AsignedRolesRecord = AsignedRoles & XataRecord;
+
 export type DatabaseSchema = {
   surveys: SurveysRecord;
   asigned_surveys: AsignedSurveysRecord;
   survey_answers: SurveyAnswersRecord;
   patient_profiles: PatientProfilesRecord;
+  roles: RolesRecord;
+  asigned_roles: AsignedRolesRecord;
 };
 
 const DatabaseClient = buildClient();

@@ -19,7 +19,7 @@ const data = [
 	{ link: "/dashboard", label: "Inicio", icon: IconLayoutDashboard },
 	{ link: "/dashboard/surveys", label: "Encuestas", icon: IconCheckbox },
 	{ link: "/dashboard/surveys/results", label: "Resultados", icon: IconReport },
-	{ link: "/dashboard/patients", label: "Pacientes", icon: IconUsers },
+	{ link: "/dashboard/users", label: "Usuarios", icon: IconUsers },
 	{
 		link: "/dashboard/integrations",
 		label: "Integraciones",

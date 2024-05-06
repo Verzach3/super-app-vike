@@ -6,7 +6,7 @@ import MantineWrapper from "@/components/MantineWrapper";
 export default {
   passToClient: ["user"],
   // <title>
-  title: "My Vike App",
+  title: "WellFit Platform",
   extends: vikeReact,
   Wrapper: MantineWrapper
 } satisfies Config;

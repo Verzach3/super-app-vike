@@ -26,6 +26,39 @@ import {
 import serveStatic from "serve-static";
 import { telefunc } from "telefunc";
 import { renderPage } from "vike/server";
+import { Memory, Low } from "lowdb"
+import { CronJob } from "cron";
+import { getAuthToken } from "./libs/emr/getAuthToken";
+
+export type CacheData = {
+  emr_token: string;
+}
+const cache = new Low<CacheData>(new Memory(), { emr_token: "" });
+
+try {
+  const token = await getAuthToken();
+  cache.data.emr_token = token ?? "";
+  await cache.write()
+  console.log("EMR Token Renewed");
+} catch (error) {
+  console.error("EMR Token Renew Error:", error);
+}
+
+const emrTokenRenweJob = new CronJob("*/50 * * * *",
+  async () => {
+    try {
+      const token = await getAuthToken();
+      cache.data.emr_token = token ?? "";
+      await cache.write()
+    } catch (error) {
+      console.error("EMR Token Renew Error:", error);
+    }
+  },
+  () => { console.log("EMR Token Renewed")},
+  true,
+  "America/Bogota"
+);
+
 
 installWhatwgNodeFetch();
 installGetSetCookie();
@@ -65,6 +98,8 @@ async function startServer() {
 
   app.use(
     eventHandler(async (event) => {
+      // Initialize the cache on the H3 event context
+      event.context.cache = cache;
       const sessionCookie = getCookie(event, "__session");
       if (sessionCookie) {
         try {
@@ -160,6 +195,8 @@ async function startServer() {
       const pageContextInit = {
         urlOriginal: event.node.req.originalUrl || event.node.req.url!,
         user: event.context.user,
+        // Pass the cache to the page context
+        cache: cache,
       };
 
       const pageContext = await renderPage(pageContextInit);
