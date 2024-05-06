@@ -4,6 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
+    "start": "tsx ./h3-entry.ts",
     "dev": "tsx ./h3-entry.ts",
     "build": "vite build",
     "preview": "NODE_ENV=production tsx ./h3-entry.ts"
