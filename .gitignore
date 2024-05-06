@@ -1,6 +1,5 @@
 .env
-firebase
 .xata
 node_modules
-
 dist/
+firebase/service-account.json
