@@ -1,10 +1,10 @@
 import {getXataClient} from "@/db/xata.server";
+import { ContextVariableMap } from "hono";
 import {getContext} from "telefunc";
-import {H3Event} from "h3";
 
 
 async function AsignedSurveysTelefunc() {
-  const context = getContext<H3Event>();
+  const context = getContext<ContextVariableMap>();
   const xata = getXataClient()
-  return await xata.db.asigned_surveys.filter({patient: context.context.user?.uid}).getAll()
+  return await xata.db.asigned_surveys.filter({patient: context.user?.uid}).getAll()
 }

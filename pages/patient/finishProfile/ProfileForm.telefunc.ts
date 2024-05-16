@@ -2,7 +2,7 @@ import {Static, Type} from "@sinclair/typebox"
 import {Value} from "@sinclair/typebox/value"
 import {Abort, getContext} from "telefunc";
 import {getXataClient} from "@/db/xata.server";
-import {H3Event} from "h3";
+import { ContextVariableMap } from "hono";
 
 const ProfileValidator = Type.Object({
   name: Type.String({minLength: 2}),
@@ -20,7 +20,7 @@ const ProfileValidator = Type.Object({
 export type ProfileValidatorType = Static<typeof ProfileValidator>;
 
 export async function onCompleteProfile(values: ProfileValidatorType) {
-  const context = getContext<H3Event>();
+  const context = getContext<ContextVariableMap>();
   if (!Value.Check(ProfileValidator, values)) {
     return {
       error: "Invalid values",
@@ -30,7 +30,7 @@ export async function onCompleteProfile(values: ProfileValidatorType) {
 
   const xata = getXataClient();
   try {
-    await xata.db.patient_profiles.create({user_id: context.context.user?.uid, ...values});
+    await xata.db.patient_profiles.create({user_id: context.user?.uid, ...values});
   } catch (e) {
     console.error("Error creating profile", e);
     return {

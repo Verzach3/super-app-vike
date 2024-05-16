@@ -1,7 +1,7 @@
 import { getXataClient } from "@/db/xata.server";
 import { Survey } from "@/types/DBTypes";
+import { ContextVariableMap } from "hono";
 import { getContext } from "telefunc";
-import { H3Event } from "h3";
 
 type OnSurveyCompleteArgs = {
   survey: Survey;
@@ -9,9 +9,9 @@ type OnSurveyCompleteArgs = {
 }
 
 export async function onSurveyComplete({ survey, response }: OnSurveyCompleteArgs) {
-  const context = getContext<H3Event>()
+  const context = getContext<ContextVariableMap>()
   const xata = getXataClient()
-  const profile = await xata.db.patient_profiles.filter({ user_id: context.context.user?.uid }).select(["id"]).getFirst()
+  const profile = await xata.db.patient_profiles.filter({ user_id: context.user?.uid }).select(["id"]).getFirst()
   if (!profile) {
     return { error: "Profile not found" }
   }
