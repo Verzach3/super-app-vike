@@ -4,9 +4,10 @@
   "description": "",
   "type": "module",
   "scripts": {
+    "start": "tsx ./server-entry.ts",
     "dev": "vite",
     "build": "vite build",
-    "preview": "NODE_ENV=production tsx ./hono-entry.ts",
+    "preview": "NODE_ENV=production tsx ./server-entry.ts",
     "lint": "biome lint --apply .",
     "format": "biome format --write ."
   },
