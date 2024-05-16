@@ -5,7 +5,8 @@ import "@mantine/carousel/styles.css"
 import React from "react";
 import {createTheme, MantineProvider} from "@mantine/core";
 import {Notifications} from "@mantine/notifications";
-
+import { Provider } from "jotai";
+import { AtomStore } from "@/state/Store";
 const theme = createTheme({
   /** Your theme override here */
   fontFamily: "Inter, sans-serif",
@@ -14,10 +15,12 @@ const theme = createTheme({
 
 function MantineWrapper({ children }: { children: React.ReactNode }) {
   return (
+    <Provider store={AtomStore}>
       <MantineProvider theme={theme}>
         <Notifications position={"top-right"}/>
         {children}
       </MantineProvider>
+    </Provider>
   )
 }
 

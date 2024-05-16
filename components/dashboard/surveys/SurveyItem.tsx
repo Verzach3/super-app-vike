@@ -14,9 +14,12 @@ import {
 import {
 	IconDots,
 	IconMessageCircle,
+	IconPencil,
 	IconSettings,
 	IconUser,
 } from "@tabler/icons-react";
+import { navigate } from "vike/client/router";
+import classes from "@/components/dashboard/surveys/SurveyItem.module.css";
 
 interface SurveyItemProps {
 	title: string;
@@ -24,6 +27,7 @@ interface SurveyItemProps {
 	responses: number;
 	percentage: number;
 	assigned: number;
+	surveyId: string;
 }
 
 export function SurveyItem({
@@ -32,11 +36,12 @@ export function SurveyItem({
 	responses,
 	percentage,
 	assigned,
+	surveyId
 }: SurveyItemProps) {
 	return (
 		<Card>
 			<Card.Section>
-				<Card withBorder radius={"lg"} shadow={"md"}>
+				<Card className={classes.title} withBorder radius={"lg"} shadow={"md"} onClick={() => navigate(`/dashboard/surveys/view/${surveyId}`)}>
 					<Card.Section>
 						<Container mt={"md"}>
 							<Badge size={"md"} variant={"light"}>
@@ -110,7 +115,7 @@ export function SurveyItem({
 				<Group grow justify={"space-between"} wrap="nowrap">
 					<Group grow my={"xs"} justify={"flex-start"} ml={"md"}>
 						<Stack gap={0}>
-							<Text ta={"left"} size={"md"} ff={"Inter"} fw={600} truncate="end">
+							<Text className={classes.title} ta={"left"} size={"md"} ff={"Inter"} fw={600} truncate="end" onClick={() => navigate(`/dashboard/surveys/view/${surveyId}`)}>
 								{title}
 							</Text>
 							<Text size={"xs"} ff={"Inter"} c={"gray"} fw={600}>
@@ -121,29 +126,22 @@ export function SurveyItem({
 					<Group justify="right">
 						<Menu shadow="md" width={200}>
 							<Menu.Target>
-								<ActionIcon variant={"white"} c={"gray"} size={"md"} w={"100%"} onClick={(e) => {
-									e.stopPropagation();
-								}}>
+								<ActionIcon variant={"white"} c={"gray"} size={"md"} w={"100%"}>
 									<IconDots />
 								</ActionIcon>
 							</Menu.Target>
-							<Menu.Dropdown>
-								<Menu.Label>Application</Menu.Label>
+							<Menu.Dropdown
+							>
+								<Menu.Label>Opciones</Menu.Label>
 								<Menu.Item
+									onClick={(e) => {
+										navigate(`/dashboard/surveys/edit/${surveyId}`);
+									}}
 									leftSection={
-										<IconSettings style={{ width: rem(14), height: rem(14) }} />
+										<IconPencil style={{ width: rem(14), height: rem(14) }} />
 									}
 								>
-									Settings
-								</Menu.Item>
-								<Menu.Item
-									leftSection={
-										<IconMessageCircle
-											style={{ width: rem(14), height: rem(14) }}
-										/>
-									}
-								>
-									Messages
+									Editar
 								</Menu.Item>
 							</Menu.Dropdown>
 						</Menu>

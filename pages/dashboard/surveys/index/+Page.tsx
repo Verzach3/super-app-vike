@@ -89,8 +89,8 @@ function DashboardSurveys() {
         <Grid mb={"md"}>
           {data.surveys.map((survey) => {
             return (
-              <Grid.Col span={{ base: 12, md: 6, lg: 4 }} key={survey.id} onClick={() => navigate(`/dashboard/surveys/view/${survey.id}`)}>
-                <SurveyItem title={survey.name} responses={data.surveyAnswers[survey.id]} assigned={data.surveyAsignees[survey.id]} percentage={0} lastResponse="Test" />
+              <Grid.Col span={{ base: 12, md: 6, lg: 4 }} key={survey.id}>
+                <SurveyItem title={survey.name} responses={data.surveyAnswers[survey.id]} assigned={data.surveyAsignees[survey.id]} surveyId={survey.id} percentage={0} lastResponse="Test" />
               </Grid.Col>
             )
           })}

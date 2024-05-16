@@ -13,7 +13,7 @@ import { IconCheck } from "@tabler/icons-react";
 import classes from "@/styles/routes/auth.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-
+import wellfit_logo from "@/assets/wellfit-bottom-text.svg";
 
 export default Page;
 
@@ -74,7 +74,7 @@ function Page() {
   const actionCodeSettings = {
     // URL you want to redirect back to. The domain (www.example.com) for this
     // URL must be in the authorized domains list in the Firebase Console.
-    url: "http://localhost:3000/login",
+    url: `${process.env.NODE_ENV === "production" ? "https://platform.wellfitclinic.com" : "http://localhost:3000"}/login`,
     // This must be true.
     handleCodeInApp: true,
   };
@@ -143,7 +143,7 @@ function Page() {
         <Paper className={classes.form} radius={0} p={30}>
           <Box pos="relative">
             <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-            <Image src={"/assets/wellfit-bottom-text.svg"} h={200} fit={"contain"} />
+            <Image src={wellfit_logo} h={200} fit={"contain"} />
             <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
               Bienvenido a WellFit
             </Title>

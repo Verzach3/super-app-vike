@@ -44,7 +44,7 @@ try {
   console.error("EMR Token Renew Error:", error);
 }
 
-const emrTokenRenweJob = new CronJob("*/50 * * * *",
+new CronJob("*/50 * * * *",
   async () => {
     try {
       const token = await getAuthToken();
@@ -58,7 +58,6 @@ const emrTokenRenweJob = new CronJob("*/50 * * * *",
   true,
   "America/Bogota"
 );
-
 
 installWhatwgNodeFetch();
 installGetSetCookie();

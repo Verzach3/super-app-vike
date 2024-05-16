@@ -9,7 +9,7 @@ import { navigate } from "vike/client/router";
 import {useData} from "vike-react/useData";
 import {PatientIndexData} from "@/pages/patient/index/+data";
 import {Survey} from "@/types/DBTypes";
-
+import consultory from "@/assets/consultory.avif";
 
 function Patient_index() {
   const pageData = useData<PatientIndexData>()
@@ -25,7 +25,7 @@ function Patient_index() {
   return (
     <div style={{ paddingBottom: "10rem", height: "100%"}}>
       <Image
-        src={"/assets/consultory.avif"}
+        src={consultory}
         style={{ objectFit: "cover", width: "100%", height: "25rem" }}
       />
       {/* Appointment button */}

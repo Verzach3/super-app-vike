@@ -1,7 +1,10 @@
-import { AppShell, LoadingOverlay } from "@mantine/core";
+import { AppShell, Box, LoadingOverlay } from "@mantine/core";
 import { DashNav } from "@/components/dashboard/DashNav";
+import { useAtomValue } from "jotai";
+import { TransitionAtom } from "@/state/dashboard/TransitionAtom";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
+  const loading = useAtomValue(TransitionAtom)
   return (
     <AppShell
       navbar={{
@@ -13,7 +16,8 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
         <DashNav />
       </AppShell.Navbar>
       <AppShell.Main>
-        {children}
+          <LoadingOverlay visible={loading} zIndex={1000} loaderProps={{ type: "dots"}} />
+          {children}
       </AppShell.Main>
     </AppShell>
   );
