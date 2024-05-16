@@ -82,7 +82,7 @@ app.post("/api/sessionLogin", async (c) => {
   const body = await c.req.json();
   const idToken: string = body.idToken || "";
 
-  let expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days. The auth.createSessionCookie() function of Firebase expects time to be specified in miliseconds.
+  let expiresIn = 60 * 60 * 24 * 5; // 5 days. The auth.createSessionCookie() function of Firebase expects time to be specified in miliseconds.
 
   const auth = getAuth(firebaseAdmin);
   try {
