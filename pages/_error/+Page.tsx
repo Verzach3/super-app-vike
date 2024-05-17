@@ -4,14 +4,10 @@ import React from "react";
 import { usePageContext } from "vike-react/usePageContext";
 
 export default function Page() {
-  const { is404 } = usePageContext();
-  if (is404) {
-    return (
-      <NothingFound/>
-    );
-  } else {
-    return (
-      <ServerError/>
-    );
-  }
+	const { is404 } = usePageContext();
+	if (is404) {
+		return <NothingFound />;
+	} else {
+		return <ServerError />;
+	}
 }

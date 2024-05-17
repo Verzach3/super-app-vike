@@ -1,5 +1,5 @@
 import React from "react";
-import {Center, Container} from "@mantine/core";
+import { Center, Container } from "@mantine/core";
 import ProfileForm from "@/pages/patient/finishProfile/ProfileForm";
 
 function Page() {

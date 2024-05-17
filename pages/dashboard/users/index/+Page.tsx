@@ -1,5 +1,5 @@
 import { useData } from "vike-react/useData";
-import { RegistedUsers } from "./+data";
+import type { RegistedUsers } from "./+data";
 import { useEffect, useState } from "react";
 import {
   ActionIcon,
@@ -21,12 +21,12 @@ import {
 import { IconArrowRight, IconSearch, IconUser } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { DateInput } from "@mantine/dates";
-import { Bundle, Patient } from "fhir/r4";
+import type { Bundle, Patient } from "fhir/r4";
 import { onRequestPatients } from "./onRequestPatients.telefunc";
 import { onEMRProfileAsign } from "./onEMRProfileAsign.telefunc";
 import { notifications } from "@mantine/notifications";
-import { PatientProfilesRecord } from "@/db/xata.server";
-import { SelectedPick } from "@xata.io/client";
+import type { PatientProfilesRecord } from "@/db/xata.server";
+import type { SelectedPick } from "@xata.io/client";
 import UsersSearch from "@/components/dashboard/patients/UsersSearch";
 
 function Page() {
@@ -41,13 +41,13 @@ function Page() {
   const [asignLoading, setAsignLoading] = useState(false);
   const [patients, setPatients] = useState<Bundle<Patient> | undefined>();
 
-  async function getPatients() {
-    setAsignLoading(true);
-    const patients = await onRequestPatients();
-    if (!patients.patients) return;
-    setPatients(patients.patients);
-    setAsignLoading(false);
-  }
+	async function getPatients() {
+		setAsignLoading(true);
+		const patients = await onRequestPatients();
+		if (!patients.patients) return;
+		setPatients(patients.patients);
+		setAsignLoading(false);
+	}
 
   useEffect(() => {
     getPatients();
