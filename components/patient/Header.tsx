@@ -15,6 +15,7 @@ import {
 	useMantineTheme,
 	TextInput,
 	Popover,
+	Image
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -32,6 +33,7 @@ import {
 import classes from "@/styles/patient/Header.module.css";
 import HeaderMessage from "./header/HeaderMessage";
 import { navigate } from "vike/client/router";
+
 
 const mockdata = [
 	{
@@ -97,9 +99,12 @@ export function Header() {
 		<>
 			<header className={classes.header}>
 				<Group justify="space-between" h="100%">
+					<Group>
+
 					<Text style={{ fontFamily: "Inter" }} fw={800}>
-						SuperApp
+						WellFit Clinics
 					</Text>
+					</Group>
 					<Group h="100%" gap={0} visibleFrom="sm" style={{ width: "30rem" }}>
 						<TextInput
 							variant={"filled"}

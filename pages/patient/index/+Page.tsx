@@ -1,4 +1,5 @@
 import {
+	Button,
 	Card,
 	Center,
 	Container,
@@ -25,16 +26,13 @@ import consultory from "@/assets/consultory.avif";
 function Patient_index() {
 	const pageData = useData<PatientIndexData>();
 	const [profile, setProfile] = useState<null>(null);
-	useEffect(() => {
-		console.log(pageData);
-	}, []);
 
 	if ("error" in pageData) {
 		return null;
 	}
 
 	return (
-		<div style={{ paddingBottom: "10rem", height: "100%" }}>
+		<div style={{ paddingBottom: "10rem" }}>
 			<Image
 				src={consultory}
 				style={{ objectFit: "cover", width: "100%", height: "25rem" }}
@@ -49,41 +47,21 @@ function Patient_index() {
 					height: "100%",
 				}}
 			>
-				<motion.div
-					style={{
-						flex: 1,
-						display: "flex",
-						justifyContent: "flex-end",
-						width: "fit-content",
-					}}
-					whileHover={{
-						scale: 1.03,
-					}}
-				>
-					<Card
-						withBorder
-						w={"25rem"}
-						style={{
-							alignSelf: "flex-end",
-							top: "-2.5rem",
-							marginRight: "2rem",
-						}}
-					>
-						<Center>
-							<Group>
-								<Title size={"1.2rem"}>
-									¿Necesitas una cita para diagnostico?
-								</Title>
-								Necesitas ayuda?
-							</Group>
-							<IconCaretRight size={"2rem"} />
-						</Center>
-					</Card>
-				</motion.div>
+				<AppointmentButton />
 				<Container w={"100%"}>
-					<Title ta={"left"} mt={"xss"} style={{ fontFamily: "Inter" }}>
+					<Title ta={"left"} mt={"md"} style={{ fontFamily: "Inter" }}>
 						Hola, {pageData.patientProfile?.name}
 					</Title>
+				</Container>
+				<Container w={"100%"}>
+					<Card withBorder bg="var(--mantine-color-orange-2)">
+						<Text ff={"Inter"} fw={600}>
+							Por favor termina tu perfil, es importante para nosotros tener toda tu informacion.
+						</Text>
+						<Button mt={"xs"} color="var(--mantine-color-orange-6)">
+							Terminar Perfil
+						</Button>
+					</Card>
 				</Container>
 				<Container w={"100%"}>
 					<Text ta={"left"} size="xl" fw={600} mt={"xl"} mb={"xl"}>
@@ -114,24 +92,23 @@ function Patient_index() {
 						{pageData.asignedSurveys?.length ?? 0 > 0 ? (
 							<>
 								<SimpleGrid cols={1}>
-									{pageData.asignedSurveys &&
-										pageData.asignedSurveys.map((asignedSurvey) => {
-											if (!asignedSurvey) {
-												return null;
-											}
-											return (
-												<SurveyCard
-													key={asignedSurvey.id}
-													onClick={() => {
-														void navigate(
-															`/patient/surveys/${asignedSurvey.survey?.id}`,
-														);
-													}}
-													survey={asignedSurvey.survey as Survey}
-													answerId={asignedSurvey.answer?.id}
-												/>
-											);
-										})}
+									{pageData.asignedSurveys?.map((asignedSurvey) => {
+										if (!asignedSurvey) {
+											return null;
+										}
+										return (
+											<SurveyCard
+												key={asignedSurvey.id}
+												onClick={() => {
+													void navigate(
+														`/patient/surveys/${asignedSurvey.survey?.id}`,
+													);
+												}}
+												survey={asignedSurvey.survey as Survey}
+												answerId={asignedSurvey.answer?.id}
+											/>
+										);
+									})}
 								</SimpleGrid>
 								<Container fluid>
 									<UnstyledButton onClick={() => navigate("/patient/surveys")}>
@@ -155,11 +132,11 @@ function Patient_index() {
 				<Container>
 					<Stack>
 						<Center>
-							<Title ta={"center"} order={3} fw={600} mt={"4rem"} mb={"md"}>
+							{/* <Title ta={"center"} order={3} fw={600} mt={"4rem"} mb={"md"}>
 								Recibe Atencion
-							</Title>
+							</Title> */}
 						</Center>
-						<SimpleGrid cols={2}>
+						{/* <SimpleGrid cols={2}>
 							<Card withBorder py={"lg"}>
 								<Center>
 									<FaUserDoctor
@@ -204,7 +181,7 @@ function Patient_index() {
 									</Title>
 								</Center>
 							</Card>
-						</SimpleGrid>
+						</SimpleGrid> */}
 					</Stack>
 				</Container>
 			</div>
@@ -213,3 +190,37 @@ function Patient_index() {
 }
 
 export default Patient_index;
+function AppointmentButton() {
+	return (
+		<motion.div
+			style={{
+				flex: 1,
+				display: "flex",
+				justifyContent: "flex-end",
+				width: "fit-content",
+			}}
+			whileHover={{
+				scale: 1.03,
+			}}
+		>
+			<Card
+				visibleFrom="md"
+				withBorder
+				w={"25rem"}
+				style={{
+					alignSelf: "flex-end",
+					top: "-2.5rem",
+					marginRight: "2rem",
+				}}
+			>
+				<Center>
+					<Group>
+						<Title size={"1.2rem"}>¿Necesitas una cita para diagnostico?</Title>
+						Necesitas ayuda?
+					</Group>
+					<IconCaretRight size={"2rem"} />
+				</Center>
+			</Card>
+		</motion.div>
+	);
+}
