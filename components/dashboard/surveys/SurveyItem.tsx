@@ -36,12 +36,18 @@ export function SurveyItem({
 	responses,
 	percentage,
 	assigned,
-	surveyId
+	surveyId,
 }: SurveyItemProps) {
 	return (
 		<Card>
 			<Card.Section>
-				<Card className={classes.title} withBorder radius={"lg"} shadow={"md"} onClick={() => navigate(`/dashboard/surveys/view/${surveyId}`)}>
+				<Card
+					className={classes.title}
+					withBorder
+					radius={"lg"}
+					shadow={"md"}
+					onClick={() => navigate(`/dashboard/surveys/view/${surveyId}`)}
+				>
 					<Card.Section>
 						<Container mt={"md"}>
 							<Badge size={"md"} variant={"light"}>
@@ -115,7 +121,15 @@ export function SurveyItem({
 				<Group grow justify={"space-between"} wrap="nowrap">
 					<Group grow my={"xs"} justify={"flex-start"} ml={"md"}>
 						<Stack gap={0}>
-							<Text className={classes.title} ta={"left"} size={"md"} ff={"Inter"} fw={600} truncate="end" onClick={() => navigate(`/dashboard/surveys/view/${surveyId}`)}>
+							<Text
+								className={classes.title}
+								ta={"left"}
+								size={"md"}
+								ff={"Inter"}
+								fw={600}
+								truncate="end"
+								onClick={() => navigate(`/dashboard/surveys/view/${surveyId}`)}
+							>
 								{title}
 							</Text>
 							<Text size={"xs"} ff={"Inter"} c={"gray"} fw={600}>
@@ -130,8 +144,7 @@ export function SurveyItem({
 									<IconDots />
 								</ActionIcon>
 							</Menu.Target>
-							<Menu.Dropdown
-							>
+							<Menu.Dropdown>
 								<Menu.Label>Opciones</Menu.Label>
 								<Menu.Item
 									onClick={(e) => {

@@ -30,7 +30,7 @@ const data = [
 ];
 
 export function DashNav() {
-	const pageContext = usePageContext()
+	const pageContext = usePageContext();
 	const [active, setActive] = useState("Inicio");
 
 	async function handleLogout() {
@@ -48,7 +48,6 @@ export function DashNav() {
 			setActive("Inicio");
 		}
 	}, [pageContext]);
-
 
 	const links = data.map((item) => (
 		<UnstyledButton

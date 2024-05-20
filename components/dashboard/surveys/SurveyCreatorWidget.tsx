@@ -4,7 +4,7 @@ import type { ICreatorOptions } from "survey-creator-core";
 const SurveyCreatorReact = require("survey-creator-react");
 import "survey-core/defaultV2.css";
 import "survey-creator-core/survey-creator-core.css";
-import { onSaveSurvey } from "@/pages/dashboard/surveys/edit/@id/SurveySave.telefunc";
+import type { onSaveSurvey } from "@/pages/dashboard/surveys/edit/@id/SurveySave.telefunc";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
 
@@ -34,7 +34,7 @@ export default function SurveyCreatorWidget(props: {
 					title: "Encuesta guardada",
 					message: "La encuesta ha sido guardada exitosamente",
 					color: "blue",
-					icon: <IconCheck/>
+					icon: <IconCheck />,
 				});
 			});
 			callback(no, true);
@@ -44,7 +44,5 @@ export default function SurveyCreatorWidget(props: {
 
 	creator.JSON = props.json || {};
 
-	return (
-		<SurveyCreatorComponent creator={creator} />
-	);
+	return <SurveyCreatorComponent creator={creator} />;
 }
