@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconPlus } from "@tabler/icons-react";
-import { onCreateSurvey } from "./CreateSurveyModal.telefunc";
+import { onCreateSurvey } from "./telefuncs/CreateSurveyModal.telefunc";
 import { useState } from "react";
 import { navigate } from "vike/client/router";
 

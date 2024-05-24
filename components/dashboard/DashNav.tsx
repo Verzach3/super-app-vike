@@ -1,10 +1,12 @@
 import { Button, Code, Group, Text, UnstyledButton } from "@mantine/core";
 import {
 	IconCheckbox,
+	IconFileDescription,
 	IconLayoutDashboard,
 	IconLogout,
 	IconPlugConnected,
 	IconPuzzle,
+	IconReceipt,
 	IconReport,
 	IconSettings,
 	IconUsers,
@@ -20,6 +22,12 @@ const data = [
 	{ link: "/dashboard/surveys", label: "Encuestas", icon: IconCheckbox },
 	{ link: "/dashboard/surveys/results", label: "Resultados", icon: IconReport },
 	{ link: "/dashboard/users", label: "Usuarios", icon: IconUsers },
+	{
+		link: "/dashboard/caseworkers",
+		label: "Case Workers",
+		icon: IconFileDescription,
+	},
+	{ link: "/dashboard/billing", label: "Pagos y Productos", icon: IconReceipt },
 	{
 		link: "/dashboard/integrations",
 		label: "Integraciones",

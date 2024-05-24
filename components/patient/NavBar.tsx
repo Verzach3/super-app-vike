@@ -10,6 +10,7 @@ import {
 	ThemeIcon,
 	Modal,
 	Button,
+	Badge,
 } from "@mantine/core";
 import {
 	IconHome2,
@@ -41,12 +42,18 @@ const mainLinksLabel = [
 type MainLinksLabels = (typeof mainLinksLabel)[number]["label"];
 
 type LinksType = {
-	[K in MainLinksLabels]: { name: string; path?: string; soon?: boolean }[];
+	[K in MainLinksLabels]: {
+		name: string;
+		path?: string;
+		soon?: boolean;
+		new?: boolean;
+	}[];
 };
 
 const navLinks: LinksType = {
 	Inicio: [
 		{ name: "Inicio", path: "/patient/" },
+		{ name: "Datasalud", path: "/patient/datasalud", new: true },
 		{ name: "Analisis", path: "/patient/lab-results", soon: true },
 		{ name: "Medicamentos", path: "/patient/medications", soon: true },
 		{ name: "Encuestas", path: "/patient/surveys" },
@@ -149,6 +156,17 @@ export default function NavBar() {
 						>
 							<IconLock style={{ width: "70%", height: "70%" }} />
 						</ThemeIcon>
+					</Group>
+				)}
+				{link.new && (
+					<Group justify="right" mr={"md"} align="center">
+						<Badge
+							size="sm"
+							variant="gradient"
+							gradient={{ from: "cyan", to: "lime", deg: 90 }}
+						>
+							Nuevo
+						</Badge>
 					</Group>
 				)}
 			</Group>

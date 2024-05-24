@@ -3,5 +3,5 @@
 node_modules
 dist/
 firebase/service-account.json
-
+service-account.json
 super-app-vike.tar

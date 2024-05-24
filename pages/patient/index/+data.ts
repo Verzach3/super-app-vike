@@ -10,9 +10,10 @@ export async function data(pageContext: PageContext) {
 			.filter({ user_id: pageContext.user?.uid })
 			.getFirst();
 		const asignedSurveys = await xata.db.asigned_surveys
-			.filter({ patient: patientProfile!.id })
+			.filter({ patient: patientProfile?.id })
 			.select(["*", "survey.*", "answer.id"])
 			.getAll();
+
 
 		return {
 			asignedSurveys,
