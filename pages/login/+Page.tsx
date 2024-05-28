@@ -26,8 +26,8 @@ import classes from "@/styles/routes/auth.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import wellfit_logo from "@/assets/wellfit-bottom-text.svg";
-
-export default Page;
+import BannerInstruction from "@/components/login/BannerInstriuction";
+export default Page;  
 
 function Page() {
 	const [error, setError] = useState("");
@@ -153,6 +153,7 @@ function Page() {
 					</Paper>
 				</Center>
 			</Modal>
+      <BannerInstruction />
 			<div className={classes.wrapper}>
 				<Paper className={classes.form} radius={0} p={30}>
 					<Box pos="relative">

@@ -1,0 +1,165 @@
+.modal {
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .modalHeader {
+    display: none;
+  }
+  
+  .modalBody {
+    padding: 0;
+  }
+  
+  .banner {
+    padding: 1rem;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+  }
+  
+  .bannerHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  .bannerTitle {
+    color: #000000;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  .closeButton {
+    color: black;
+    background-color: transparent; /* Elimina el relleno azul */
+    transition: color 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none; /* Elimina cualquier borde */
+  }
+  
+  .closeButton:hover {
+    color: #000; /* Mantén el color negro al pasar el cursor */
+  }
+  
+  .iconX {
+    color: black; /* Asegura que el icono sea negro */
+  }
+  
+  .bannerText {
+    color: #34495e;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+  }
+  
+  .card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  
+  .cardTitle {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .cardText {
+    color: #34495e;
+    font-size: 1rem;
+  }
+  
+  .grid {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .grid > :nth-child(3) {
+      grid-column: span 2;
+    }
+  }
+  
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  
+    .grid > :nth-child(1),
+    .grid > :nth-child(2) {
+      grid-column: span 1;
+    }
+  
+    .grid > :nth-child(3),
+    .grid > :nth-child(4),
+    .grid > :nth-child(5) {
+      grid-column: span 1;
+    }
+  
+    .banner {
+      padding: 4rem;
+    }
+  
+    .bannerTitle {
+      font-size: 3rem;
+    }
+  
+    .bannerText {
+      font-size: 1.5rem;
+    }
+  
+    .card {
+      padding: 2rem;
+    }
+  
+    .cardTitle {
+      font-size: 1.75rem;
+    }
+  
+    .cardText {
+      font-size: 1.25rem;
+    }
+  }
+  
+  .contactSection {
+    margin-top: 1.1rem;
+    text-align: center;
+  }
+  
+  .contactText {
+    color: #34495e;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+  }
+  
+  .whatsappButton {
+    background-color: #25d366;
+    color: white;
+
+  }
+  
+  .whatsappButton:hover {
+    background-color: #22bb5b;
+  }
+  
