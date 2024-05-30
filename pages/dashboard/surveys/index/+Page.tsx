@@ -22,16 +22,24 @@ import { SurveyItem } from "@/components/dashboard/surveys/SurveyItem";
 import { useData } from "vike-react/useData";
 import type { SurveysPageData } from "./+data";
 import { navigate } from "vike/client/router";
+import { onLoadSurveys } from "@/components/dashboard/surveys/telefuncs/onLoadSurveys";
 
 function DashboardSurveys() {
-	const data = useData<SurveysPageData>();
+	const [data, setData] = useState<SurveysPageData>();
+	const defaultData = useData<SurveysPageData>();
+	useEffect(() => {
+		setData(defaultData);
+	}, [defaultData]);
+
+	function updateData() {
+		onLoadSurveys().then((res) => {
+			setData(res);
+		});
+	}
+
 	const [createOpened, { open: openCreate, close: closeCreate }] =
 		useDisclosure(false);
 	const [asignSearch, setAsignSearch] = useState<string>("");
-	const loaderData = { data: [], error: "" };
-	useEffect(() => {
-		console.log(loaderData);
-	}, [loaderData]);
 
 	return (
 		<>
@@ -89,7 +97,7 @@ function DashboardSurveys() {
 					</Button>
 				</Group>
 				<Grid mb={"md"}>
-					{data.surveys.map((survey) => {
+					{data?.surveys.map((survey) => {
 						return (
 							<Grid.Col span={{ base: 12, md: 6, lg: 4 }} key={survey.id}>
 								<SurveyItem
@@ -99,6 +107,7 @@ function DashboardSurveys() {
 									surveyId={survey.id}
 									percentage={0}
 									lastResponse="Test"
+									global={survey.global}
 								/>
 							</Grid.Col>
 						);

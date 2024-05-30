@@ -13,13 +13,18 @@ import {
 } from "@mantine/core";
 import {
 	IconDots,
+	IconGlobe,
 	IconMessageCircle,
 	IconPencil,
+	IconPlanet,
 	IconSettings,
 	IconUser,
+	IconWorld,
 } from "@tabler/icons-react";
 import { navigate } from "vike/client/router";
 import classes from "@/components/dashboard/surveys/SurveyItem.module.css";
+import { onSetSurveyGlobal } from "./telefuncs/onSetSurveyGlobal.telefunc";
+import { notifications } from "@mantine/notifications";
 
 interface SurveyItemProps {
 	title: string;
@@ -28,6 +33,7 @@ interface SurveyItemProps {
 	percentage: number;
 	assigned: number;
 	surveyId: string;
+	global: boolean;
 }
 
 export function SurveyItem({
@@ -37,6 +43,7 @@ export function SurveyItem({
 	percentage,
 	assigned,
 	surveyId,
+	global
 }: SurveyItemProps) {
 	return (
 		<Card>
@@ -49,11 +56,12 @@ export function SurveyItem({
 					onClick={() => navigate(`/dashboard/surveys/view/${surveyId}`)}
 				>
 					<Card.Section>
-						<Container mt={"md"}>
+						<Group ml={"md"} mt={"md"}>
 							<Badge size={"md"} variant={"light"}>
 								Programa
 							</Badge>
-						</Container>
+							{global && <Badge color="green" size={"md"}>Global</Badge>}
+						</Group>
 					</Card.Section>
 					<Card.Section>
 						<Center>
@@ -118,7 +126,7 @@ export function SurveyItem({
 				</Card>
 			</Card.Section>
 			<Card.Section>
-				<Group grow justify={"space-between"} wrap="nowrap">
+				<Group justify={"space-between"} wrap="nowrap">
 					<Group grow my={"xs"} justify={"flex-start"} ml={"md"}>
 						<Stack gap={0}>
 							<Text
@@ -138,6 +146,7 @@ export function SurveyItem({
 						</Stack>
 					</Group>
 					<Group justify="right">
+						{/* Card Menu */}
 						<Menu shadow="md" width={200}>
 							<Menu.Target>
 								<ActionIcon variant={"white"} c={"gray"} size={"md"} w={"100%"}>
@@ -155,6 +164,22 @@ export function SurveyItem({
 									}
 								>
 									Editar
+								</Menu.Item>
+								<Menu.Item
+									onClick={(e) => {
+										onSetSurveyGlobal(surveyId).then(() => {
+											notifications.show({
+												title: "Encuesta activada",
+												message: !global ? "Encuesta activada globalmente" : "Encuesta desactivada globalmente",
+												color: "green",
+											});
+										});
+									}}
+									leftSection={
+										<IconPlanet style={{ width: rem(14), height: rem(14) }} />
+									}
+								>
+									{!global ? "Activar Global" : "Desactivar Global"}
 								</Menu.Item>
 							</Menu.Dropdown>
 						</Menu>

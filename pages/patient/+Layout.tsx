@@ -1,12 +1,15 @@
-import { AppShell, rem } from "@mantine/core";
+import { AppShell, LoadingOverlay, rem } from "@mantine/core";
 import { Header } from "@/components/patient/Header";
 import { useDisclosure } from "@mantine/hooks";
 import type React from "react";
 import NavBar from "@/components/patient/NavBar";
+import { PatientTransitionAtom } from "@/state/patient/TransitionAtom";
+import { useAtomValue } from "jotai";
 
 function Layout({ children }: { children: React.ReactNode }) {
 	const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
 	const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+	const loading = useAtomValue(PatientTransitionAtom);
 	return (
 		<AppShell
 			header={{ height: rem("60px") }}
@@ -22,7 +25,14 @@ function Layout({ children }: { children: React.ReactNode }) {
 			<AppShell.Navbar>
 				<NavBar />
 			</AppShell.Navbar>
-			<AppShell.Main>{children}</AppShell.Main>
+			<AppShell.Main>
+				<LoadingOverlay
+					visible={loading}
+					zIndex={1000}
+					loaderProps={{ type: "dots" }}
+				/>
+				{children}
+			</AppShell.Main>
 		</AppShell>
 	);
 }

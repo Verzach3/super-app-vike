@@ -1,3 +1,3 @@
 import { atom } from "jotai";
 
-export const TransitionAtom = atom(false);
+export const DashboardTransitionAtom = atom(false);

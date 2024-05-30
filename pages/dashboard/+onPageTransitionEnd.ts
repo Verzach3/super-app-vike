@@ -1,8 +1,8 @@
 import { AtomStore } from "@/state/Store";
-import { TransitionAtom } from "@/state/dashboard/TransitionAtom";
+import { DashboardTransitionAtom } from "@/state/dashboard/TransitionAtom";
 import type { OnPageTransitionEndAsync } from "vike/types";
 
 export const onPageTransitionEnd: OnPageTransitionEndAsync = async () => {
-	AtomStore.set(TransitionAtom, false);
+	AtomStore.set(DashboardTransitionAtom, false);
 	console.log("Page transition end");
 };

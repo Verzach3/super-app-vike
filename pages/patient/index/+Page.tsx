@@ -56,7 +56,8 @@ function Patient_index() {
 				<Container w={"100%"}>
 					<Card withBorder bg="var(--mantine-color-orange-2)">
 						<Text ff={"Inter"} fw={600}>
-							Por favor termina tu perfil, es importante para nosotros tener toda tu informacion.
+							Por favor termina tu perfil, es importante para nosotros completar
+							tu informacion.
 						</Text>
 						<Button mt={"xs"} color="var(--mantine-color-orange-6)">
 							Terminar Perfil
@@ -89,26 +90,28 @@ function Patient_index() {
 								Encuestas Disponibles
 							</Title>
 						</Center>
-						{pageData.asignedSurveys?.length ?? 0 > 0 ? (
+						{pageData.asignedSurveys?.length > 0 ? (
 							<>
 								<SimpleGrid cols={1}>
-									{pageData.asignedSurveys?.map((asignedSurvey) => {
-										if (!asignedSurvey) {
-											return null;
-										}
-										return (
-											<SurveyCard
-												key={asignedSurvey.id}
-												onClick={() => {
-													void navigate(
-														`/patient/surveys/${asignedSurvey.survey?.id}`,
-													);
-												}}
-												survey={asignedSurvey.survey as Survey}
-												answerId={asignedSurvey.answer?.id}
-											/>
-										);
-									})}
+									{pageData.asignedSurveys
+										?.sort().slice(0, 3)
+										.map((asignedSurvey) => {
+											if (!asignedSurvey) {
+												return null;
+											}
+											return (
+												<SurveyCard
+													key={asignedSurvey.id}
+													onClick={() => {
+														void navigate(
+															`/patient/surveys/${asignedSurvey.survey?.id}`,
+														);
+													}}
+													survey={asignedSurvey.survey as Survey}
+													answerId={asignedSurvey.answer?.id}
+												/>
+											);
+										})}
 								</SimpleGrid>
 								<Container fluid>
 									<UnstyledButton onClick={() => navigate("/patient/surveys")}>

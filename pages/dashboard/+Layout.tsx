@@ -1,10 +1,10 @@
 import { AppShell, Box, LoadingOverlay } from "@mantine/core";
 import { DashNav } from "@/components/dashboard/DashNav";
 import { useAtomValue } from "jotai";
-import { TransitionAtom } from "@/state/dashboard/TransitionAtom";
+import { DashboardTransitionAtom } from "@/state/dashboard/TransitionAtom";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
-	const loading = useAtomValue(TransitionAtom);
+	const loading = useAtomValue(DashboardTransitionAtom);
 	return (
 		<AppShell
 			navbar={{
