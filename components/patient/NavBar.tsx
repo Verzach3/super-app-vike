@@ -200,7 +200,9 @@ export default function NavBar() {
 						</div>
 						<div>
 							<UnstyledButton
-								onClick={() => {}}
+								onClick={() => {
+									navigate("/logout")
+								}}
 								className={classes.mainLink}
 								style={{ marginBottom: "1rem" }}
 							>

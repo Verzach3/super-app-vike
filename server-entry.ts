@@ -10,11 +10,17 @@ import { renderPage } from "vike/server";
 import { Memory, Low } from "lowdb";
 import { CronJob } from "cron";
 import { getAuthToken } from "./libs/emr/getAuthToken";
-
+import { createClient } from "webdav"
 export type CacheData = {
 	emr_token: string;
 };
 const cache = new Low<CacheData>(new Memory(), { emr_token: "" });
+
+const webdav = createClient(process.env.WEBDAV_URL ?? "", {
+	username: process.env.WEBDAV_USER,
+	password: process.env.WEBDAV_PASSWORD,
+})
+
 
 try {
 	const token = await getAuthToken();
@@ -54,7 +60,7 @@ if (isProduction) {
 	app.use(
 		"/*",
 		serveStatic({
-			root: `dist/client/`,
+			root: "dist/client/",
 		}),
 	);
 }
@@ -62,6 +68,7 @@ if (isProduction) {
 app.use(async (c, next) => {
 	// set the cache on the Hono event context
 	c.set("cache", cache);
+	c.set("webdav", webdav);
 	const sessionCookie: string = getCookie(c, "__session") || "";
 	if (sessionCookie) {
 		const auth = getAuth(firebaseAdmin);
@@ -84,7 +91,7 @@ app.post("/api/sessionLogin", async (c) => {
 	const body = await c.req.json();
 	const idToken: string = body.idToken || "";
 
-  let expiresIn = 34560000; // 5 days. The auth.createSessionCookie() function of Firebase expects time to be specified in miliseconds.
+	let expiresIn = 34560000; // 5 days. The auth.createSessionCookie() function of Firebase expects time to be specified in miliseconds.
 
 	const auth = getAuth(firebaseAdmin);
 	try {
@@ -115,6 +122,8 @@ app.post("/_telefunc", async (c) => {
 		body: await c.req.text(),
 		context: {
 			cache: c.get("cache"),
+			webdav: c.get("webdav"),
+			user: c.get("user"),
 			...c,
 		},
 	});
@@ -131,18 +140,20 @@ app.all("*", async (c, next) => {
 		urlOriginal: c.req.url,
 		user: c.get("user"),
 		cache: c.get("cache"),
+		webdav: c.get("webdav"),
 	};
 	const pageContext = await renderPage(pageContextInit);
 	const { httpResponse } = pageContext;
 	if (!httpResponse) {
 		return next();
-	} else {
-		const { body, statusCode, headers } = httpResponse;
-		headers.forEach(([name, value]) => c.header(name, value));
-		c.status(statusCode);
-
-		return c.body(body);
 	}
+	const { body, statusCode, headers } = httpResponse;
+	for (const [name, value] of headers) {
+		c.header(name, value);
+	}
+	c.status(statusCode);
+
+	return c.body(body);
 });
 
 if (isProduction) {

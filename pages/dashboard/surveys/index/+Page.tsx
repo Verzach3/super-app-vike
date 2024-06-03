@@ -21,8 +21,7 @@ import { CreateSurveyModal } from "@/components/dashboard/surveys/CreateSurveyMo
 import { SurveyItem } from "@/components/dashboard/surveys/SurveyItem";
 import { useData } from "vike-react/useData";
 import type { SurveysPageData } from "./+data";
-import { navigate } from "vike/client/router";
-import { onLoadSurveys } from "@/components/dashboard/surveys/telefuncs/onLoadSurveys";
+import { onLoadSurveys } from "@/components/dashboard/surveys/telefuncs/onLoadSurveys.telefunc";
 
 function DashboardSurveys() {
 	const [data, setData] = useState<SurveysPageData>();

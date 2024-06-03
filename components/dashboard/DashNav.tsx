@@ -41,10 +41,6 @@ export function DashNav() {
 	const pageContext = usePageContext();
 	const [active, setActive] = useState("Inicio");
 
-	async function handleLogout() {
-		// await supabase.auth.signOut();
-	}
-
 	useEffect(() => {
 		const current = pageContext.urlPathname.split("/").pop();
 		for (const item of data) {
@@ -89,9 +85,8 @@ export function DashNav() {
 				{/* <UserButton session={session ?? undefined} /> */}
 				<Button
 					className={classes.link}
-					onClick={(event) => {
-						event.preventDefault();
-						handleLogout().then((r) => console.log(r));
+					onClick={() => {
+						navigate("/logout");
 					}}
 				>
 					<IconLogout className={classes.linkIcon} stroke={1.5} />

@@ -26,8 +26,8 @@ import classes from "@/styles/routes/auth.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import wellfit_logo from "@/assets/wellfit-bottom-text.svg";
-import BannerInstruction from "@/components/login/BannerInstriuction";
-export default Page;  
+import BannerInstruction from "@/components/login/BannerInstructions";
+export default Page;
 
 function Page() {
 	const [error, setError] = useState("");
@@ -68,6 +68,7 @@ function Page() {
 					// You can check if the user is new or existing:
 					// result.additionalUserInfo.isNewUser
 				})
+				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 				.catch((error: any) => {
 					const errorCode = error.code;
 					const errorMessage = error.message;
@@ -77,9 +78,8 @@ function Page() {
 					// Common errors could be invalid email and invalid or expired OTPs.
 				});
 			return () => {};
-		} else {
-			setLoading(false);
 		}
+		setLoading(false);
 	}, []);
 
 	const actionCodeSettings = {
@@ -99,6 +99,7 @@ function Page() {
 		try {
 			await sendSignInLinkToEmail(auth, email, actionCodeSettings);
 			window.localStorage.setItem("emailForSignIn", email);
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		} catch (error: any) {
 			const errorCode = error.code;
 			const errorMessage = error.message;
@@ -153,7 +154,7 @@ function Page() {
 					</Paper>
 				</Center>
 			</Modal>
-      <BannerInstruction />
+			<BannerInstruction />
 			<div className={classes.wrapper}>
 				<Paper className={classes.form} radius={0} p={30}>
 					<Box pos="relative">

@@ -68,6 +68,7 @@ const tables = [
     revLinks: [
       { column: "patient", table: "asigned_surveys" },
       { column: "respondent", table: "survey_answers" },
+      { column: "patient_profile", table: "datasalud" },
     ],
   },
   {
@@ -80,6 +81,35 @@ const tables = [
     columns: [
       { name: "user_uid", type: "string", unique: true },
       { name: "asigned_role", type: "link", link: { table: "roles" } },
+    ],
+  },
+  {
+    name: "products",
+    columns: [
+      { name: "product_name", type: "text" },
+      { name: "description", type: "text" },
+      { name: "price", type: "int" },
+      { name: "stock", type: "int" },
+    ],
+  },
+  {
+    name: "discounts",
+    columns: [
+      { name: "code", type: "string" },
+      { name: "percentage_off", type: "float" },
+      { name: "valid_from", type: "datetime" },
+      { name: "valid_to", type: "datetime" },
+    ],
+  },
+  {
+    name: "datasalud",
+    columns: [
+      {
+        name: "patient_profile",
+        type: "link",
+        link: { table: "patient_profiles" },
+        unique: true,
+      },
     ],
   },
 ] as const;
@@ -105,6 +135,15 @@ export type RolesRecord = Roles & XataRecord;
 export type AsignedRoles = InferredTypes["asigned_roles"];
 export type AsignedRolesRecord = AsignedRoles & XataRecord;
 
+export type Products = InferredTypes["products"];
+export type ProductsRecord = Products & XataRecord;
+
+export type Discounts = InferredTypes["discounts"];
+export type DiscountsRecord = Discounts & XataRecord;
+
+export type Datasalud = InferredTypes["datasalud"];
+export type DatasaludRecord = Datasalud & XataRecord;
+
 export type DatabaseSchema = {
   surveys: SurveysRecord;
   asigned_surveys: AsignedSurveysRecord;
@@ -112,6 +151,9 @@ export type DatabaseSchema = {
   patient_profiles: PatientProfilesRecord;
   roles: RolesRecord;
   asigned_roles: AsignedRolesRecord;
+  products: ProductsRecord;
+  discounts: DiscountsRecord;
+  datasalud: DatasaludRecord;
 };
 
 const DatabaseClient = buildClient();
