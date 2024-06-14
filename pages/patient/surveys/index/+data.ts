@@ -36,6 +36,7 @@ export async function data(pageContext: PageContext) {
 
 		return {
 			asignedSurveys,
+			globalSurveys,
 			globalSurveysAnswers,
 		};
 	} catch (e) {

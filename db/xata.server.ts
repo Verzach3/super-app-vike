@@ -64,6 +64,7 @@ const tables = [
       { name: "gender", type: "string", notNull: true, defaultValue: "N" },
       { name: "phone", type: "string", notNull: true, defaultValue: "" },
       { name: "second_lastname", type: "string" },
+      { name: "cedula", type: "string", unique: true },
     ],
     revLinks: [
       { column: "patient", table: "asigned_surveys" },

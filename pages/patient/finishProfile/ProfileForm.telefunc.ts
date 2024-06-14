@@ -3,6 +3,7 @@ import { Value } from "@sinclair/typebox/value";
 import { Abort, getContext } from "telefunc";
 import { getXataClient } from "@/db/xata.server";
 import type { ContextVariableMap } from "hono";
+import { redirect } from "vike/abort";
 
 const ProfileValidator = Type.Object({
 	name: Type.String({ minLength: 2 }),
@@ -24,6 +25,12 @@ export async function onCompleteProfile(values: ProfileValidatorType) {
 		};
 	}
 	console.log("Profile completed", values);
+
+	if (context.user?.uid === undefined) {
+		return {
+			error: "You must be logged in to complete your profile",
+		};
+	}
 
 	const xata = getXataClient();
 	try {

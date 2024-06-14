@@ -1,7 +1,6 @@
 import { Button, Code, Group, Text, UnstyledButton } from "@mantine/core";
 import {
 	IconCheckbox,
-	IconFileDescription,
 	IconLayoutDashboard,
 	IconLogout,
 	IconPlugConnected,
@@ -11,8 +10,7 @@ import {
 	IconSettings,
 	IconUsers,
 } from "@tabler/icons-react";
-import { useCallback, useEffect, useState } from "react";
-import { UserButton } from "@/components/dashboard/UserButton";
+import { useEffect, useState } from "react";
 import classes from "../../styles/dashboard/DashNav.module.css";
 import { navigate } from "vike/client/router";
 import { usePageContext } from "vike-react/usePageContext";
@@ -22,11 +20,6 @@ const data = [
 	{ link: "/dashboard/surveys", label: "Encuestas", icon: IconCheckbox },
 	{ link: "/dashboard/surveys/results", label: "Resultados", icon: IconReport },
 	{ link: "/dashboard/users", label: "Usuarios", icon: IconUsers },
-	{
-		link: "/dashboard/caseworkers",
-		label: "Case Workers",
-		icon: IconFileDescription,
-	},
 	{ link: "/dashboard/billing", label: "Pagos y Productos", icon: IconReceipt },
 	{
 		link: "/dashboard/integrations",
@@ -81,18 +74,17 @@ export function DashNav() {
 				{links}
 			</div>
 
-			<div className={classes.footer}>
-				{/* <UserButton session={session ?? undefined} /> */}
+			{/* <UserButton session={session ?? undefined} /> */}
+			<Group>
 				<Button
-					className={classes.link}
 					onClick={() => {
 						navigate("/logout");
 					}}
+					leftSection={<IconLogout stroke={1.5} />}
 				>
-					<IconLogout className={classes.linkIcon} stroke={1.5} />
-					<span>Logout</span>
+					Cerrar Sesion
 				</Button>
-			</div>
+			</Group>
 		</nav>
 	);
 }

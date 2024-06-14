@@ -11,6 +11,7 @@ const guard: GuardAsync = async (pageContext): ReturnType<GuardAsync> => {
 		return;
 	}
 
+	// TODO: onUserCheck is insecure, uid can be changed by the user
 	if (!(await onUserCheck(pageContext.user.uid))) {
 		throw redirect("/patient/finishProfile", 302);
 	}

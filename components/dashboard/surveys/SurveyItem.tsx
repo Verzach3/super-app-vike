@@ -21,7 +21,7 @@ import {
 	IconUser,
 	IconWorld,
 } from "@tabler/icons-react";
-import { navigate } from "vike/client/router";
+import { navigate, reload } from "vike/client/router";
 import classes from "@/components/dashboard/surveys/SurveyItem.module.css";
 import { onSetSurveyGlobal } from "./telefuncs/onSetSurveyGlobal.telefunc";
 import { notifications } from "@mantine/notifications";
@@ -167,13 +167,15 @@ export function SurveyItem({
 								</Menu.Item>
 								<Menu.Item
 									onClick={(e) => {
-										onSetSurveyGlobal(surveyId).then(() => {
+										onSetSurveyGlobal(surveyId, !global).then(async () => {
 											notifications.show({
 												title: "Encuesta activada",
 												message: !global ? "Encuesta activada globalmente" : "Encuesta desactivada globalmente",
 												color: "green",
 											});
+											await reload();
 										});
+										
 									}}
 									leftSection={
 										<IconPlanet style={{ width: rem(14), height: rem(14) }} />

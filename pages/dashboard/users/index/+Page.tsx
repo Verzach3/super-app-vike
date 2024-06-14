@@ -17,6 +17,7 @@ import {
 	Center,
 	Loader,
 	Table,
+	Badge,
 } from "@mantine/core";
 import { IconArrowRight, IconSearch, IconUser } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
@@ -28,30 +29,27 @@ import { notifications } from "@mantine/notifications";
 import type { PatientProfilesRecord } from "@/db/xata.server";
 import type { SelectedPick } from "@xata.io/client";
 import UsersSearch from "@/components/dashboard/patients/UsersSearch";
+import { useQuery } from "@tanstack/react-query";
 
 function Page() {
 	const data = useData<RegistedUsers>();
 	const [selectedPatient, setSelectedPatient] = useState<
 		(typeof data)["patients"]["records"][number] | undefined
 	>();
+	const [selectedUserType, setSelectedUserType] = useState<
+		"registered" | "emr" | "full_profile" | "datasalud"
+	>("full_profile");
+	const [selectedFilter, setSelectedFilter] = useState<
+		"all" | "registered" | "emr" | "full_profile" | "datasalud"
+	>("all");
 	const [drawerOpen, { open: openDrawer, close: closeDrawer }] =
 		useDisclosure(false);
 	const [asignEMRIdOpen, { open: openAsignEMRId, close: closeAsignEMRId }] =
 		useDisclosure(false);
-	const [asignLoading, setAsignLoading] = useState(false);
-	const [patients, setPatients] = useState<Bundle<Patient> | undefined>();
-
-	async function getPatients() {
-		setAsignLoading(true);
-		const patients = await onRequestPatients();
-		if (!patients.patients) return;
-		setPatients(patients.patients);
-		setAsignLoading(false);
-	}
-
-	useEffect(() => {
-		getPatients();
-	}, [getPatients]);
+	const { data: patients, isLoading: asignLoading } = useQuery({
+		queryKey: ["getDatasaludUsers"],
+		queryFn: onRequestPatients,
+	});
 
 	return (
 		<>
@@ -61,14 +59,14 @@ function Page() {
 				closeAsignEMRId,
 				selectedPatient,
 				asignLoading,
-				patients,
+				patients?.patients,
 			)}
 			<Container mt={"2rem"}>
 				<Title mb={"md"} ff={"Inter"}>
 					Usuarios
 				</Title>
 				<Group grow mb={"md"}>
-					<UsersSearch />
+					<UsersSearch onSelect={setSelectedUserType} onFilter={setSelectedFilter} />
 				</Group>
 				<Group mb={"md"} grow>
 					<TextInput placeholder="Buscar" />
@@ -84,6 +82,7 @@ function Page() {
 							<Table.Th>Apellido</Table.Th>
 							<Table.Th>Telefono</Table.Th>
 							<Table.Th>Cedula</Table.Th>
+							<Table.Th>Rol</Table.Th>
 							<Table.Th>Perfil EMR</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
@@ -95,6 +94,8 @@ function Page() {
 									<Table.Td>{patient.lastname}</Table.Td>
 									<Table.Td>{patient.phone}</Table.Td>
 									<Table.Td>{patient.cedula ?? ""}</Table.Td>
+									<Table.Td><Badge>Usuario</Badge></Table.Td>
+									
 									<Table.Td>{patient.emr_id}</Table.Td>
 									<Table.Td>
 										<ActionIcon
@@ -125,7 +126,7 @@ function ProfileAsignDrawe(
 		| Readonly<SelectedPick<PatientProfilesRecord, ["*"]>>
 		| undefined,
 	asignLoading: boolean,
-	patients: Bundle<Patient> | undefined,
+	patients: Bundle<Patient> | undefined | null,
 ) {
 	return (
 		<Drawer

@@ -21,8 +21,12 @@ function Surveys() {
 		console.log(`Survey results: ${JSON.stringify(result.data, null, 3)}`);
 		onSurveyComplete({ survey: surveyData as Survey, response: result.data });
 		setSurveyCompleted(true);
-	}, []);
-	const interval = useInterval(() => setSeconds((s) => s + 1), 1000);
+	}, [surveyData]);
+	const interval = useInterval(() => {
+		if (seconds < 5) {
+			setSeconds((s) => s + 1);
+		}
+	}, 1000);
 
 	useEffect(() => {
 		if (seconds >= 5) {

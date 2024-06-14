@@ -10,8 +10,8 @@ function PatientSurveys() {
 	const loaderData = useData<PatientSurveysData>();
 
 	useEffect(() => {
-		console.log(loaderData.globalSurveysAnswers)
-	}, [loaderData.globalSurveysAnswers])
+		console.log(loaderData.globalSurveysAnswers);
+	}, [loaderData.globalSurveysAnswers]);
 
 	return (
 		<Container mt={"1rem"}>
@@ -29,16 +29,20 @@ function PatientSurveys() {
 				Para todos
 			</Text>
 			<SimpleGrid cols={1}>
-				{loaderData.globalSurveysAnswers?.map((asignedSurvey) => {
+				{loaderData.globalSurveys?.map((asignedSurvey) => {
 					if (!asignedSurvey) return null;
 					return (
 						<SurveyCard
 							key={asignedSurvey.id}
 							onClick={() => {
-								void navigate(`/patient/surveys/${asignedSurvey.survey?.id}`);
+								void navigate(`/patient/surveys/${asignedSurvey.id}`);
 							}}
-							survey={asignedSurvey.survey as Survey}
-							answerId={asignedSurvey.answer?.id}
+							survey={asignedSurvey}
+							answerId={
+								loaderData.globalSurveysAnswers?.find(
+									(answer) => answer?.survey?.id === asignedSurvey.id,
+								)?.id
+							}
 						/>
 					);
 				})}

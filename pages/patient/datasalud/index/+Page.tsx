@@ -10,8 +10,9 @@ import {
 	LoadingOverlay,
 	Table,
 	Badge,
+	ActionIcon,
 } from "@mantine/core";
-import { IconFileUpload } from "@tabler/icons-react";
+import { IconEye, IconFileUpload } from "@tabler/icons-react";
 import { useData } from "vike-react/useData";
 import type { Data } from "./+data";
 import { onEnroll } from "./onEnroll.telefunc";
@@ -59,9 +60,11 @@ function DataSalud() {
 				</Table.Td>
 				<Table.Td>
 					<Group justify="end">
-						<Button onClick={() => {}}>Eliminar</Button>
-						<Button onClick={() => {}}>Ver</Button>
+						<ActionIcon variant="transparent" c={"gray"}>
+							<IconEye/>
+						</ActionIcon>
 					</Group>
+
 				</Table.Td>
 			</Table.Tr>
 		);
@@ -75,8 +78,8 @@ function DataSalud() {
 			/>
 			<Title ta={"center"}>Tu DataSalud</Title>
 			<Group grow>
-				<Card bg={"#edede9"} h={"75dvh"} mt={"xl"} radius={"lg"}>
-					{!data.files ? (
+				<Card bg={"#edede9"} h={"75dvh"} mt={"xl"} radius={"lg"} withBorder>
+					{data.files?.length === 0 ? (
 						<Center h={"100%"}>
 							<Stack>
 								<Text fw={600}>
