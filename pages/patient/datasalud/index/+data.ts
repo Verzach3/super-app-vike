@@ -1,6 +1,6 @@
 import { getXataClient } from "@/db/xata.server";
 import type { PageContext } from "vike/types";
-import { FileStat } from "webdav";
+import type { FileStat } from "webdav";
 
 export type Data = Awaited<ReturnType<typeof data>>;
 

@@ -29,7 +29,7 @@ export default function BannerInstruction() {
           <Title order={1} className={classes.bannerTitle}>
             Bienvenido a nuestro nuevo portal del paciente
           </Title>
-          <ActionIcon className={classes.closeButton} onClick={handleClose} color="gray.1">
+          <ActionIcon className={classes.closeButton} onClick={handleClose} color="gray.1" size={"xl"}>
             <IconX className={classes.iconX} />
           </ActionIcon>
         </div>

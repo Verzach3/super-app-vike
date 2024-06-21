@@ -6,7 +6,7 @@ function CaseWorkers() {
       <Title ta={"center"} fw={800}>
         Usuarios en Datasalud
       </Title>
-
+      
     </Container>
   )
 }

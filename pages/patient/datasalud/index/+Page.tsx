@@ -11,6 +11,7 @@ import {
 	Table,
 	Badge,
 	ActionIcon,
+	rem,
 } from "@mantine/core";
 import { IconEye, IconFileUpload } from "@tabler/icons-react";
 import { useData } from "vike-react/useData";
@@ -21,7 +22,7 @@ import { reload } from "vike/client/router";
 import { Dropzone, type FileWithPath } from "@mantine/dropzone";
 import { onFileUpload } from "./onFileUpload.telefunc";
 import { notifications } from "@mantine/notifications";
-
+import { IconX, IconUpload, IconPhoto } from "@tabler/icons-react";
 function DataSalud() {
 	const data = useData<Data>();
 	const openRef = useRef<() => void>(null);
@@ -61,10 +62,9 @@ function DataSalud() {
 				<Table.Td>
 					<Group justify="end">
 						<ActionIcon variant="transparent" c={"gray"}>
-							<IconEye/>
+							<IconEye />
 						</ActionIcon>
 					</Group>
-
 				</Table.Td>
 			</Table.Tr>
 		);
@@ -78,7 +78,7 @@ function DataSalud() {
 			/>
 			<Title ta={"center"}>Tu DataSalud</Title>
 			<Group grow>
-				<Card bg={"#edede9"} h={"75dvh"} mt={"xl"} radius={"lg"} withBorder>
+				<Card bg={"gray.1"} h={"75dvh"} mt={"xl"} radius={"lg"} withBorder>
 					{data.files?.length === 0 ? (
 						<Center h={"100%"}>
 							<Stack>
@@ -125,18 +125,93 @@ function DataSalud() {
 							</Stack>
 						</Center>
 					) : (
-						<Table.ScrollContainer minWidth={"100%"}>
-							<Table>
-								<Table.Thead>
-									<Table.Tr>
-										<Table.Th>Nombre de Archivo</Table.Th>
-										<Table.Th>Estado</Table.Th>
-										<Table.Th ta={"end"}>Acciones</Table.Th>
-									</Table.Tr>
-								</Table.Thead>
-								<Table.Tbody>{rows}</Table.Tbody>
-							</Table>
-						</Table.ScrollContainer>
+						<>
+							<Table.ScrollContainer minWidth={"100%"}>
+								<Table>
+									<Table.Thead>
+										<Table.Tr>
+											<Table.Th>Nombre de Archivo</Table.Th>
+											<Table.Th>Estado</Table.Th>
+											<Table.Th ta={"end"}>Acciones</Table.Th>
+										</Table.Tr>
+									</Table.Thead>
+									<Table.Tbody>{rows}</Table.Tbody>
+								</Table>
+							</Table.ScrollContainer>
+							<Dropzone.FullScreen
+								active
+								accept={[
+									"application/pdf",
+									"application/msword",
+									"application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+								]}
+								onDrop={async (files) => {
+									setLoading(true);
+									for (const file of files) {
+										//convert to base64
+										const reader = new FileReader();
+										reader.readAsDataURL(file);
+										reader.onload = async (e) => {
+											const base64 = reader.result as string;
+											await onFileUpload(base64, file.name);
+											notifications.show({
+												title: `Archivo ${file.name} cargado correctamente`,
+												message: "El archivo ha sido cargado correctamente",
+											});
+										};
+										setLoading(false);
+										reload();
+									}
+								}}
+							>
+								<Group
+									justify="center"
+									gap="xl"
+									mih={220}
+									style={{ pointerEvents: "none" }}
+								>
+									<Dropzone.Accept>
+										<IconUpload
+											style={{
+												width: rem(52),
+												height: rem(52),
+												color: "var(--mantine-color-blue-6)",
+											}}
+											stroke={1.5}
+										/>
+									</Dropzone.Accept>
+									<Dropzone.Reject>
+										<IconX
+											style={{
+												width: rem(52),
+												height: rem(52),
+												color: "var(--mantine-color-red-6)",
+											}}
+											stroke={1.5}
+										/>
+									</Dropzone.Reject>
+									<Dropzone.Idle>
+										<IconPhoto
+											style={{
+												width: rem(52),
+												height: rem(52),
+												color: "var(--mantine-color-dimmed)",
+											}}
+											stroke={1.5}
+										/>
+									</Dropzone.Idle>
+
+									<div>
+										<Text size="xl" inline>
+											Drag images here or click to select files
+										</Text>
+										<Text size="sm" c="dimmed" inline mt={7}>
+											Attach as many files as you like, each file should not
+											exceed 5mb
+										</Text>									</div>
+								</Group>
+							</Dropzone.FullScreen>
+						</>
 					)}
 				</Card>
 			</Group>

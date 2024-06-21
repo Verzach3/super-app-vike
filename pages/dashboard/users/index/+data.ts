@@ -1,6 +1,4 @@
 import { getXataClient } from "@/db/xata.server";
-import { getPatients } from "@/libs/emr/fhir/patient";
-import { getAuth } from "firebase-admin/auth";
 import type { PageContext } from "vike/types";
 export type RegistedUsers = Awaited<ReturnType<typeof data>>;
 
@@ -11,5 +9,10 @@ export async function data(pageContext: PageContext) {
 			size: 10,
 		},
 	});
-	return { patients: patients };
+	const caseWorkers = await xata.db.case_workers.select(["patient.*", "worker.*"]).getPaginated({
+		pagination: {
+			size: 10,
+		},
+	});
+	return { patients: patients, caseWorkers };
 }

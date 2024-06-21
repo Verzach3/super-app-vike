@@ -10,7 +10,8 @@ import { renderPage } from "vike/server";
 import { Memory, Low } from "lowdb";
 import { CronJob } from "cron";
 import { getAuthToken } from "./libs/emr/getAuthToken";
-import { createClient } from "webdav"
+import { createClient } from "webdav";
+
 export type CacheData = {
 	emr_token: string;
 };
@@ -19,8 +20,7 @@ const cache = new Low<CacheData>(new Memory(), { emr_token: "" });
 const webdav = createClient(process.env.WEBDAV_URL ?? "", {
 	username: process.env.WEBDAV_USER,
 	password: process.env.WEBDAV_PASSWORD,
-})
-
+});
 
 try {
 	const token = await getAuthToken();

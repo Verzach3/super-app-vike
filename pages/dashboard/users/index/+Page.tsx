@@ -18,6 +18,8 @@ import {
 	Loader,
 	Table,
 	Badge,
+	ScrollArea,
+	LoadingOverlay,
 } from "@mantine/core";
 import { IconArrowRight, IconSearch, IconUser } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
@@ -30,6 +32,9 @@ import type { PatientProfilesRecord } from "@/db/xata.server";
 import type { SelectedPick } from "@xata.io/client";
 import UsersSearch from "@/components/dashboard/patients/UsersSearch";
 import { useQuery } from "@tanstack/react-query";
+import { onGetCaseWorkers } from "./onGetCaseWorkers.telefunc";
+import { UserRoundCog } from "lucide-react";
+import { onAsignCaseWorker } from "./onAsignCaseWorker.telefunc";
 
 function Page() {
 	const data = useData<RegistedUsers>();
@@ -46,6 +51,10 @@ function Page() {
 		useDisclosure(false);
 	const [asignEMRIdOpen, { open: openAsignEMRId, close: closeAsignEMRId }] =
 		useDisclosure(false);
+	const [
+		asignCaseWorkerOpen,
+		{ open: openAsignCaseWorker, close: closeAsignCaseWorker },
+	] = useDisclosure(false);
 	const { data: patients, isLoading: asignLoading } = useQuery({
 		queryKey: ["getDatasaludUsers"],
 		queryFn: onRequestPatients,
@@ -53,7 +62,13 @@ function Page() {
 
 	return (
 		<>
-			{PatientDrawer(drawerOpen, closeDrawer, selectedPatient, openAsignEMRId)}
+			{PatientDrawer(
+				drawerOpen,
+				closeDrawer,
+				selectedPatient,
+				openAsignEMRId,
+				openAsignCaseWorker,
+			)}
 			{ProfileAsignDrawe(
 				asignEMRIdOpen,
 				closeAsignEMRId,
@@ -61,12 +76,20 @@ function Page() {
 				asignLoading,
 				patients?.patients,
 			)}
+			{AsignCaseWorker({
+				opened: asignCaseWorkerOpen,
+				close: closeAsignCaseWorker,
+				selectedPatient,
+			})}
 			<Container mt={"2rem"}>
 				<Title mb={"md"} ff={"Inter"}>
 					Usuarios
 				</Title>
 				<Group grow mb={"md"}>
-					<UsersSearch onSelect={setSelectedUserType} onFilter={setSelectedFilter} />
+					<UsersSearch
+						onSelect={setSelectedUserType}
+						onFilter={setSelectedFilter}
+					/>
 				</Group>
 				<Group mb={"md"} grow>
 					<TextInput placeholder="Buscar" />
@@ -82,7 +105,7 @@ function Page() {
 							<Table.Th>Apellido</Table.Th>
 							<Table.Th>Telefono</Table.Th>
 							<Table.Th>Cedula</Table.Th>
-							<Table.Th>Rol</Table.Th>
+							<Table.Th>CaseWorker</Table.Th>
 							<Table.Th>Perfil EMR</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
@@ -94,8 +117,12 @@ function Page() {
 									<Table.Td>{patient.lastname}</Table.Td>
 									<Table.Td>{patient.phone}</Table.Td>
 									<Table.Td>{patient.cedula ?? ""}</Table.Td>
-									<Table.Td><Badge>Usuario</Badge></Table.Td>
-									
+									<Table.Td>
+										{data.caseWorkers.records.find(
+											(caseWorker) => caseWorker.patient?.id === patient.id,
+										)?.worker?.name ?? "No asignado"}
+									</Table.Td>
+
 									<Table.Td>{patient.emr_id}</Table.Td>
 									<Table.Td>
 										<ActionIcon
@@ -209,6 +236,7 @@ function PatientDrawer(
 		| Readonly<SelectedPick<PatientProfilesRecord, ["*"]>>
 		| undefined,
 	openAsignEMRId: () => void,
+	openAsignCaseWorker: () => void,
 ) {
 	return (
 		<Drawer
@@ -264,8 +292,91 @@ function PatientDrawer(
 				<Button color="gray" onClick={openAsignEMRId}>
 					Asignar Perfil EMR
 				</Button>
+				<Button color="gray" onClick={openAsignCaseWorker}>
+					Asignar CaseWorker
+				</Button>
 				<Button>Guardar</Button>
 			</Stack>
+		</Drawer>
+	);
+}
+
+function AsignCaseWorker({
+	opened,
+	close,
+	selectedPatient,
+}: {
+	opened: boolean;
+	close: () => void;
+	selectedPatient:
+		| Readonly<SelectedPick<PatientProfilesRecord, ["*"]>>
+		| undefined;
+}) {
+	const { data, isLoading } = useQuery({
+		queryKey: ["getCaseWorkers"],
+		queryFn: onGetCaseWorkers,
+	});
+
+	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		if (data) {
+			console.log(data);
+		}
+	}, [data]);
+
+	return (
+		<Drawer opened={opened} onClose={close} position="right">
+			{isLoading ? (
+				<Center>
+					<Loader type="dots" />
+				</Center>
+			) : (
+				<>
+					<Title mb={"md"}>Asignar CaseWorker</Title>
+					<LoadingOverlay visible={loading}/>
+					<Stack>
+						<Stack h={"73dvh"}>
+							<ScrollArea.Autosize>
+								{data?.map((caseWorker) => {
+									if (!caseWorker) {
+										return null;
+									}
+									return (
+										<Card key={caseWorker.id} withBorder onClick={async () => {
+											if (!selectedPatient?.id) {
+												notifications.show({
+													title: "Error",
+													message: "No se ha seleccionado un paciente",
+													color: "red",
+												});
+												return;
+											}
+											setLoading(true);
+											await onAsignCaseWorker(selectedPatient?.id, caseWorker.id);
+											notifications.show({
+												title: "Case Worker Asignado",
+												message: "El Case Worker ha sido asignado correctamente",
+												color: "green",
+											});
+											setLoading(false);
+											close()
+										}}>
+											<Group>
+												<ThemeIcon size={"lg"} bg={"gray"}>
+													<UserRoundCog />
+												</ThemeIcon>
+												<Text>{caseWorker.name}</Text>
+											</Group>
+										</Card>
+									);
+								})}
+							</ScrollArea.Autosize>
+						</Stack>
+						<Button>Guardar</Button>
+					</Stack>
+				</>
+			)}
 		</Drawer>
 	);
 }

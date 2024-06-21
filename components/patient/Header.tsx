@@ -15,7 +15,7 @@ import {
 	useMantineTheme,
 	TextInput,
 	Popover,
-	Image
+	Image,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -33,7 +33,6 @@ import {
 import classes from "@/styles/patient/Header.module.css";
 import HeaderMessage from "./header/HeaderMessage";
 import { navigate } from "vike/client/router";
-
 
 const mockdata = [
 	{
@@ -100,10 +99,9 @@ export function Header() {
 			<header className={classes.header}>
 				<Group justify="space-between" h="100%">
 					<Group>
-
-					<Text style={{ fontFamily: "Inter" }} fw={800}>
-						WellFit Clinics
-					</Text>
+						<Text style={{ fontFamily: "Inter" }} fw={800}>
+							WellFit Clinics
+						</Text>
 					</Group>
 					<Group h="100%" gap={0} visibleFrom="sm" style={{ width: "30rem" }}>
 						<TextInput
@@ -125,16 +123,24 @@ export function Header() {
 									Messages
 								</Button>
 							</Popover.Target>
-							<Popover.Dropdown>
+							<Popover.Dropdown bg={"gray.1"} p={0} mt={"md"}>
+{/* 								
 								<HeaderMessage title={"Doctor"} content={"Hola, como estas?"} />
 								<HeaderMessage title={"Doctor"} content={"Hola, como estas?"} />
 								<HeaderMessage title={"Doctor"} content={"Hola, como estas?"} />
-								<HeaderMessage title={"Doctor"} content={"Hola, como estas?"} />
-								<div
-									style={{ width: "100%", justifyContent: "right", flex: 1 }}
+								<HeaderMessage title={"Doctor"} content={"Hola, como estas?"} /> */}
+								<Text ta={"center"} my={"xl"} fw={600} c={"gray"}>
+									No tienes mensajes por ahora
+								</Text>
+								<Button
+								mt={"xs"}
+								radius={0}
+								w={"100%"}
+									leftSection={<IconMessages />}
+									variant="subtle"
 								>
-									<Text style={{ width: "fit-content" }}>Ver Todos</Text>
-								</div>
+									Ver Todos
+								</Button>
 							</Popover.Dropdown>
 						</Popover>
 						{/* Profile Button */}

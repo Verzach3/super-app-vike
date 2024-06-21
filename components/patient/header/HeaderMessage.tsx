@@ -5,8 +5,10 @@ import {
 	Stack,
 	Text,
 	ThemeIcon,
+	Group,
 } from "@mantine/core";
 import { IconChevronRight, IconMessageCircle } from "@tabler/icons-react";
+import { MessageCircleMore, MessageSquareMore } from "lucide-react";
 
 interface HeaderMessageProps {
 	title: string;
@@ -15,49 +17,25 @@ interface HeaderMessageProps {
 
 function HeaderMessage({ title, content }: HeaderMessageProps) {
 	return (
-		<Card p={1} withBorder my={"0.2rem"} shadow={"xs"}>
-			<Center
-				inline
-				style={{
-					marginRight: "1rem",
-					marginLeft: "1rem",
-					marginTop: "0.5rem",
-					marginBottom: "0.5rem",
-					paddingBottom: "0.5rem",
-					justifyContent: "space-evenly",
-					maxHeight: "6rem",
-				}}
-			>
-				<Center inline>
-					<ThemeIcon radius={100} size={"lg"} mr={"1rem"} variant={"light"}>
-						<IconMessageCircle />
+		<Card p={0} withBorder radius={0}>
+			<Group grow py={"xs"} justify="space-between">
+				<Group ml={"md"} grow>
+					<ThemeIcon variant="transparent">
+						<MessageSquareMore />
 					</ThemeIcon>
-					<Stack gap={0}>
-						<Text
-							size="md"
-							fw={700}
-							style={{ fontFamily: "Inter" }}
-							lineClamp={1}
-						>
-							{title}
-						</Text>
-						<Text
-							size="sm"
-							c="dimmed"
-							style={{ maxHeight: "3rem" }}
-							lineClamp={1}
-						>
-							{content}
-							{content}
-							{content}
+					<Stack gap={0} w={"100%"}>
+						<Text fw={700}>{title}</Text>
+						<Text size="sm" c="dimmed" lineClamp={1}>
 							{content}
 						</Text>
 					</Stack>
-				</Center>
-				<ActionIcon variant={"white"}>
+				</Group>
+				<Group justify="end">
+				<ThemeIcon variant="transparent" color="gray" mr={"sm"}>
 					<IconChevronRight />
-				</ActionIcon>
-			</Center>
+				</ThemeIcon>
+				</Group>
+			</Group>
 		</Card>
 	);
 }
