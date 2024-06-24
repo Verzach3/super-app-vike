@@ -359,8 +359,8 @@ function AsignCaseWorker({
 												message: "El Case Worker ha sido asignado correctamente",
 												color: "green",
 											});
-											setLoading(false);
 											close()
+											setLoading(false);
 										}}>
 											<Group>
 												<ThemeIcon size={"lg"} bg={"gray"}>
