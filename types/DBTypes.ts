@@ -31,3 +31,12 @@ export type AssignedSurvey = {
 	patient: PatientProfile;
 	answer: SurveyAnswer;
 };
+
+
+export type Product = {
+	id?: string;
+	product_name: string
+  	description: string,
+  	price: number,
+  	stock: number,
+}

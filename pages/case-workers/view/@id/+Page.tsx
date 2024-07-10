@@ -1,10 +1,13 @@
 import { useData } from "vike-react/useData";
 import type { CaseWorkerData } from "./+data";
 import {
+	Affix,
 	Badge,
+	Button,
 	Card,
 	Center,
 	Container,
+	Drawer,
 	Group,
 	LoadingOverlay,
 	Select,
@@ -17,15 +20,21 @@ import { Car, Eye, Trash } from "lucide-react";
 import { notifications } from "@mantine/notifications";
 import { useState } from "react";
 import { onViewFile } from "./onViewFile.telefunc";
+import { IconAi, IconBrain, IconInputAi } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import IAReportGenerator from "./IAReportGenerator";
 
 function ViewCase() {
 	const [isLoading, setIsLoading] = useState(false);
+	const [IAReportsOpened, { open: openIAReports, close: closeIAReports }] =
+		useDisclosure(false);
 	const data = useData<CaseWorkerData>();
 	return (
 		<>
 			<Container>
 				<Title mt={"md"}>
-					Paciente: {data.caseData?.patient?.name} {data.caseData?.patient?.lastname}
+					Paciente: {data.caseData?.patient?.name}{" "}
+					{data.caseData?.patient?.lastname}
 				</Title>
 				<Title order={3} mt={"3rem"} mb={"md"}>
 					Archivos
@@ -132,7 +141,18 @@ function ViewCase() {
 					</Table.ScrollContainer>
 				</Card>
 			</Container>
+			<Drawer opened={IAReportsOpened} onClose={closeIAReports} position="right" zIndex={1000}>
+				<IAReportGenerator />
+			</Drawer>
 			<LoadingOverlay visible={isLoading} />
+			<Affix
+				position={{
+					bottom: 20,	
+					right: 30,
+				}}
+			>
+				<Button leftSection={<IconBrain />} onClick={openIAReports}>Generar reporte con IA</Button>
+			</Affix>
 		</>
 	);
 }

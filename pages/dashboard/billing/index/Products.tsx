@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
 	TextInput,
 	Grid,
@@ -5,57 +6,70 @@ import {
 	Text,
 	NumberFormatter,
 	Group,
-  Affix,
-  Button,
-  ActionIcon,
+	ActionIcon,
 } from "@mantine/core";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { Edit, Trash, UserRoundPlus } from "lucide-react";
+import type { Product } from "@/types/DBTypes";
+import { onShowProducts } from "./onShowProducts.telefunc";
 
 function Products() {
+	const [product, setProduct] = useState<Product[]>([]);
+
+	useEffect(() => {
+		const loadProducts = async () => {
+			const response = await onShowProducts();
+			if (response) {
+				const data = response.map((item) => ({
+					id: item.id ?? "",
+					description: item.description ?? "",
+					price: item.price ?? 0,
+					product_name: item.product_name ?? "",
+					stock: item.stock ?? 0,
+				}));
+				setProduct(data);
+			}
+		};
+		loadProducts();
+	}, []);
+
 	return (
 		<div>
 			<TextInput m={"md"} leftSection={<IconSearch />} placeholder="Buscar" />
 			<Grid mx={"md"}>
-				<Grid.Col span={4}>
-					<Card withBorder>
-						<Text fw={700} size="lg">Producto 1</Text>
-						<Text mb={"md"}>
-							Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque
-							accusantium provident fugiat minima culpa earum vero repudiandae
-							blanditiis doloremque consectetur ullam itaque, commodi illum
-							quaerat. In iusto est eaque aliquam?
-						</Text>
-						<Group grow justify="end">
+				{product.map((item, index) => (
+					<Grid.Col span={4} key={item.id}>
+						<Card withBorder>
+							<Text fw={700} size="lg">
+								{item.product_name}
+							</Text>
+							<Text mb={"md"}>
+								{item.description}
+							</Text>
+							<Group grow justify="end">
 								<Text ta={"right"} fw={700} size="lg">
 									<NumberFormatter
 										prefix="$ "
-										value={1000000}
+										value={item.price}
 										thousandSeparator
 									/>
 								</Text>
-						</Group>
-            <Group>
-              <ActionIcon variant="transparent">
-                <Edit/>
-              </ActionIcon>
-              <ActionIcon variant="transparent" c={"red"}>
-                <Trash/>
-              </ActionIcon>
-              <ActionIcon variant="transparent" c={"green"}>
-                <UserRoundPlus/>
-              </ActionIcon>
-            </Group>
-					</Card>
-				</Grid.Col>
-				<Grid.Col span={4}>
-					<div>Producto 2</div>
-				</Grid.Col>
-				<Grid.Col span={4}>
-					<div>Producto 3</div>
-				</Grid.Col>
+							</Group>
+							<Group>
+								<ActionIcon variant="transparent">
+									<Edit />
+								</ActionIcon>
+								<ActionIcon variant="transparent" c={"red"}>
+									<Trash />
+								</ActionIcon>
+								<ActionIcon variant="transparent" c={"green"}>
+									<UserRoundPlus />
+								</ActionIcon>
+							</Group>
+						</Card>
+					</Grid.Col>
+				))}
 			</Grid>
-
 		</div>
 	);
 }

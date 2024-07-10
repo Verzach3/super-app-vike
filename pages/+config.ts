@@ -9,10 +9,4 @@ export default {
 	// <title>
 	title: "WellFit Platform",
 	extends: vikeReact,
-	meta: {
-		// Temporary workaround until +client.js is implemented: https://github.com/vikejs/vike/issues/1468
-		firebaseApp: {
-			env: { client: true },
-		},
-	},
 } satisfies Config;
